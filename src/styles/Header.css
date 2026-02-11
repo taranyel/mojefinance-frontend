@@ -1,0 +1,160 @@
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    height: 90px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 100;
+}
+
+/* --- Typography --- */
+.header-left h1 {
+    font-size: 1.5rem; /* Matches "Dashboard" size */
+    margin: 0;
+    color: #1a202c;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.brand-title {
+    font-family: 'ADLaM Display', cursive;
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--primary-purple);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* --- Right Side Area --- */
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Guest Login Button (Pill Style) */
+.btn-login {
+    background-color: var(--primary-purple);
+    color: white;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 14px rgba(94, 53, 177, 0.4);
+    transition: all 0.3s ease;
+}
+.btn-login:hover {
+    transform: translateY(-2px);
+    background-color: #512da8;
+    box-shadow: 0 6px 20px rgba(94, 53, 177, 0.6);
+}
+
+/* --- LOGGED IN STYLES (New) --- */
+
+.logged-in-actions {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Space between Language and Profile */
+}
+
+/* Language Selector: EN CZ */
+.lang-selector {
+    display: flex;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #a0aec0; /* Gray for inactive */
+    cursor: pointer;
+}
+
+.lang-active {
+    color: #1a202c; /* Dark for active */
+    font-weight: 700;
+}
+
+.lang-option:hover {
+    color: #4a5568;
+}
+
+/* User Profile Wrapper */
+.user-profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    position: relative; /* For absolute positioning of dropdown */
+    padding: 4px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.user-profile-wrapper:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.username {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a202c;
+    font-family: 'Inter', sans-serif;
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    color: #1a202c;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.profile-dropdown {
+    position: absolute;
+    top: 120%; /* Below the profile */
+    right: 0;
+    background-color: white;
+    min-width: 150px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    padding: 8px;
+    border: 1px solid #edf2f7;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 10px 15px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    color: #e53e3e; /* Red color for Log Out */
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #fff5f5;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,132 @@
+.landing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    min-height: 80vh;
+    padding: 40px 0;
+}
+
+/* Hero Section */
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: #1a202c;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 90%;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-lg {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+}
+
+/* Preview Section (The "Screenshot" style) */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card-preview {
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.card-preview:hover {
+    transform: translateY(-5px);
+}
+
+.card-preview h3 {
+    margin-top: 0;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.lorem-sm {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    line-height: 1.5;
+}
+
+/* Specific Colors from Screenshot */
+.blue-card {
+    background-color: var(--accent-blue-light); /* Light Blue */
+}
+
+.purple-card {
+    background-color: var(--primary-purple-light); /* Light Purple */
+}
+
+/* Goal Items Styling */
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.goal-icon {
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.goal-info {
+    flex: 1;
+}
+
+.goal-info span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.fill {
+    height: 100%;
+    background: var(--text-dark);
+    border-radius: 3px;
+}

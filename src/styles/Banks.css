@@ -1,0 +1,150 @@
+/* Page Layout */
+.banks-container {
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.banks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+/* Base Card Style */
+.bank-card, .add-bank-card {
+    border-radius: 16px;
+    padding: 24px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+/* Connected Bank Card */
+.bank-card {
+    background-color: #ede7f6; /* Light Purple Background */
+    border: 1px solid transparent;
+}
+
+.bank-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(94, 53, 177, 0.1);
+}
+
+/* Header: Logo + Name */
+.bank-header-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.bank-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Brand Colors */
+.logo-csas { background-color: #0061A0; } /* CSAS Blue */
+.logo-csob { background-color: #0093dd; } /* CSOB Light Blue */
+.logo-rb   { background-color: #fec900; color: black; } /* RB Yellow */
+
+.bank-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+}
+
+/* Status Indicator */
+.bank-status {
+    font-size: 0.9rem;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #2e7d32; /* Green Active Dot */
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Disconnect Button */
+.btn-disconnect {
+    align-self: flex-start;
+    padding: 8px 18px;
+    background-color: transparent;
+    color: #c53030;
+    border: 1px solid #c53030;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-disconnect:hover {
+    background-color: #fff5f5;
+}
+
+/* "Connect New" Card */
+.add-bank-card {
+    background-color: #ede7f6;
+    border: 2px dashed rgba(94, 53, 177, 0.3);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-bank-card:hover {
+    background-color: #e8eaf6;
+    border-color: #5e35b1;
+}
+
+.plus-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #5e35b1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    background: white;
+    transition: transform 0.2s;
+}
+
+.add-bank-card:hover .plus-circle {
+    transform: scale(1.1);
+}
+
+.plus-icon {
+    font-size: 1.5rem;
+    color: #5e35b1;
+    line-height: 1;
+}
+
+.add-text {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
