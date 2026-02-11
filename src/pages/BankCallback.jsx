@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react'; // 1. Import useContext
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState, useContext} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
-import { AuthContext } from '../context/AuthContext'; // 2. Import your AuthContext (adjust path)
+import {AuthContext} from '../context/AuthContext';
+import '../styles/BankCallback.css';
 
 const BankCallback = () => {
-    const [status, setStatus] = useState('Processing...');
+    const [status, setStatus] = useState({type: 'info', text: 'Processing secure connection...'});
     const navigate = useNavigate();
-
-    // 3. Get the token from context
-    const { token } = useContext(AuthContext);
+    const {token} = useContext(AuthContext);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -16,41 +15,34 @@ const BankCallback = () => {
         const error = params.get('error');
 
         if (error) {
-            setStatus(`Error: ${error}`);
+            setStatus({type: 'error', text: `Connection Error: ${error}`});
             return;
         }
 
-        // Only proceed if we have both the bank code AND our user token
         if (code && token) {
             axiosClient.get('/api/bank-connection/ceska-sporitelna', {
-                // 4. Correct placement for GET parameters
-                params: {
-                    code: code
-                },
-                // 5. Correct Header format
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
+                params: {code},
+                headers: {'Authorization': `Bearer ${token}`}
             })
-                .then(response => {
-                    console.log("Bank Connected!", response.data);
-                    setStatus('Success! Redirecting...');
-                    setTimeout(() => navigate('/dashboard'), 2000);
+                .then(() => {
+                    setStatus({type: 'success', text: 'Bank connected successfully! Redirecting...'});
+                    setTimeout(() => navigate('/'), 2000);
                 })
                 .catch(err => {
-                    console.error("Exchange Failed", err);
-                    setStatus(`Failed: ${err.response?.status || err.message}`);
+                    const errMsg = err.response?.data?.message || err.message;
+                    setStatus({type: 'error', text: `Failed: ${errMsg}`});
                 });
         } else if (code && !token) {
-            // Optional: Handle case where bank returned but user isn't logged in
-            console.warn("Got bank code but no user token found.");
+            setStatus({type: 'error', text: 'Session expired. Please log in again.'});
         }
-    }, [navigate, token]); // 6. Add token to dependency array
+    }, [navigate, token]);
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h2>Connecting to Bank...</h2>
-            <p>{status}</p>
+        <div className="callback-container">
+            <h2>Integrating Bank...</h2>
+            <div className={`status-message status-${status.type}`}>
+                {status.text}
+            </div>
         </div>
     );
 };

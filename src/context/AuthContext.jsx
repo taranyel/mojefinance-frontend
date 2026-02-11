@@ -1,16 +1,25 @@
-import React, {createContext, useState, useEffect} from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext(null);
 
-const CLIENT_ID = 'mojefinance-frontend';
-const REDIRECT_URI = 'http://localhost:5173/';
-const AUTH_ENDPOINT = 'http://localhost:8080/realms/mojefinance/protocol/openid-connect/auth';
-const TOKEN_ENDPOINT = 'http://localhost:8080/realms/mojefinance/protocol/openid-connect/token';
+const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID;
+const REDIRECT_URI = import.meta.env.VITE_APP_URL + '/';
+const AUTH_ENDPOINT = import.meta.env.VITE_KEYCLOAK_AUTH_URL;
+const TOKEN_ENDPOINT = import.meta.env.VITE_KEYCLOAK_TOKEN_URL;
 
-export const AuthProvider = ({children}) => {
-    const [token, setToken] = useState(localStorage.getItem('access_token'));
+export const AuthProvider = ({ children }) => {
+    // Initialize token from localStorage safely
+    const [token, setToken] = useState(() => localStorage.getItem('access_token'));
 
     const login = () => {
+        console.log("Attempting login...");
+
+        if (!AUTH_ENDPOINT || !CLIENT_ID) {
+            console.error("Missing Env Vars:", { AUTH_ENDPOINT, CLIENT_ID });
+            alert("Configuration missing! Please check your .env file and restart the server.");
+            return;
+        }
+
         const params = new URLSearchParams({
             client_id: CLIENT_ID,
             response_type: 'code',
@@ -18,7 +27,16 @@ export const AuthProvider = ({children}) => {
             scope: 'openid profile email',
         });
 
-        window.location.href = `${AUTH_ENDPOINT}?${params.toString()}`;
+        const fullUrl = `${AUTH_ENDPOINT}?${params.toString()}`;
+        console.log("Redirecting to:", fullUrl);
+
+        window.location.href = fullUrl;
+    };
+
+    const logout = () => {
+        setToken(null);
+        localStorage.removeItem('access_token');
+        window.history.pushState({}, document.title, "/");
     };
 
     useEffect(() => {
@@ -30,7 +48,7 @@ export const AuthProvider = ({children}) => {
 
             fetch(TOKEN_ENDPOINT, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
                     grant_type: 'authorization_code',
                     client_id: CLIENT_ID,
@@ -43,21 +61,17 @@ export const AuthProvider = ({children}) => {
                     if (data.access_token) {
                         setToken(data.access_token);
                         localStorage.setItem('access_token', data.access_token);
+                        console.log(data.access_token)
                     } else {
                         console.error("Token exchange failed:", data);
                     }
                 })
-                .catch(console.error);
+                .catch(err => console.error("Auth Error:", err));
         }
     }, [token]);
 
-    const logout = () => {
-        setToken(null);
-        localStorage.removeItem('access_token');
-    };
-
     return (
-        <AuthContext.Provider value={{token, login, logout}}>
+        <AuthContext.Provider value={{ token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

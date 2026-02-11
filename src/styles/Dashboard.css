@@ -1,0 +1,97 @@
+.dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card-widget {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.assets-card { background-color: #f0f9ff; } /* Light Blue */
+.liabilities-card { background-color: #f0f9ff; }
+.goals-card { background-color: #f3e8ff; } /* Light Purple */
+
+h3 {
+    margin-top: 0;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.amount-large {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0 25px 0;
+    color: #1a202c;
+}
+
+/* Account List Items */
+.account-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.account-item:last-child { border-bottom: none; }
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+.icon-box.blue { background-color: #0061A0; }
+.icon-box.cyan { background-color: #00acc1; }
+
+.account-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.acc-name { font-weight: 600; font-size: 0.9rem; }
+.acc-type { font-size: 0.75rem; color: #718096; }
+.acc-amount { font-weight: 600; }
+
+/* Goals Styles */
+.goal-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.goal-content { flex: 1; }
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.goal-percent { font-size: 0.8rem; color: #555; }
+.goal-sub { font-size: 0.75rem; color: #718096; margin-top: 4px; display: block; }
+
+.progress-bar {
+    height: 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+    width: 100%;
+}
+.fill { background: #2d3748; height: 100%; border-radius: 3px; }

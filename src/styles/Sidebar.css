@@ -1,0 +1,94 @@
+.sidebar {
+    width: 250px;
+    background-color: #f5f7fa;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 1px solid #f0f0f0;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar-brand {
+    margin-bottom: 40px;
+    padding-left: 10px;
+}
+
+/* The specific brand title style requested */
+.sidebar-brand h2 {
+    font-family: 'ADLaM Display', cursive;
+    font-weight: 400; /* Regular */
+    font-size: 28px;
+    color: var(--primary-purple);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    color: #718096;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+}
+
+.menu-item:hover {
+    background-color: #f7fafc;
+    color: var(--primary-purple);
+}
+
+.menu-item.active {
+    background-color: transparent;
+    color: #2d3748;
+    font-weight: 700;
+    border-left: 4px solid #000;
+    border-radius: 0;
+}
+
+.menu-item .icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 20px;
+}
+
+a.menu-item {
+    text-decoration: none;
+    display: flex; /* Ensure flex behavior persists */
+}
+
+/* Add this to your existing Sidebar.css */
+
+/* Ensure Links act like flex containers */
+a.menu-item {
+    text-decoration: none;
+    display: flex;
+}
+
+/* Optional: Style for inactive/placeholder links */
+.menu-item.disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+.menu-item.disabled:hover {
+    background-color: transparent;
+    color: #718096;
+}
