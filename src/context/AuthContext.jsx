@@ -1,44 +1,95 @@
-import { createContext, useState, useEffect } from 'react';
+import {createContext, useState, useEffect, useCallback} from 'react';
+import {ERROR_MESSAGES} from '../constants';
+import {isTokenExpired} from '../utils';
+import {getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken, clearTokens} from '../utils';
+import {
+    exchangeCodeForTokens,
+    refreshAccessTokenWithRefreshToken,
+    validateKeycloakConfig,
+    buildAuthorizationUrl
+} from '../services';
 
 export const AuthContext = createContext(null);
 
-const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID;
-const REDIRECT_URI = import.meta.env.VITE_APP_URL + '/';
-const AUTH_ENDPOINT = import.meta.env.VITE_KEYCLOAK_AUTH_URL;
-const TOKEN_ENDPOINT = import.meta.env.VITE_KEYCLOAK_TOKEN_URL;
+export const AuthProvider = ({children}) => {
+    const [token, setToken] = useState(() => getAccessToken());
+    const [refreshToken, setRefreshToken] = useState(() => getRefreshToken());
+    const [isLoading, setIsLoading] = useState(false);
 
-export const AuthProvider = ({ children }) => {
-    // Initialize token from localStorage safely
-    const [token, setToken] = useState(() => localStorage.getItem('access_token'));
+    const logout = useCallback(() => {
+        setToken(null);
+        setRefreshToken(null);
+        clearTokens();
+        window.history.pushState({}, document.title, "/");
+    }, []);
 
-    const login = () => {
+    const login = useCallback(() => {
         console.log("Attempting login...");
 
-        if (!AUTH_ENDPOINT || !CLIENT_ID) {
-            console.error("Missing Env Vars:", { AUTH_ENDPOINT, CLIENT_ID });
-            alert("Configuration missing! Please check your .env file and restart the server.");
+        if (!validateKeycloakConfig()) {
+            console.error("Invalid Keycloak configuration");
+            alert(ERROR_MESSAGES.MISSING_CONFIG);
             return;
         }
 
-        const params = new URLSearchParams({
-            client_id: CLIENT_ID,
-            response_type: 'code',
-            redirect_uri: REDIRECT_URI,
-            scope: 'openid profile email',
-        });
+        const authUrl = buildAuthorizationUrl();
+        console.log("Redirecting to:", authUrl);
+        window.location.href = authUrl;
+    }, []);
 
-        const fullUrl = `${AUTH_ENDPOINT}?${params.toString()}`;
-        console.log("Redirecting to:", fullUrl);
+    const refreshAccessToken = useCallback(async () => {
+        if (!refreshToken) {
+            console.warn(ERROR_MESSAGES.NO_REFRESH_TOKEN);
+            logout();
+            return false;
+        }
 
-        window.location.href = fullUrl;
-    };
+        try {
+            setIsLoading(true);
+            const data = await refreshAccessTokenWithRefreshToken(refreshToken);
 
-    const logout = () => {
-        setToken(null);
-        localStorage.removeItem('access_token');
-        window.history.pushState({}, document.title, "/");
-    };
+            const newAccessToken = data.access_token;
+            const newRefreshToken = data.refresh_token || refreshToken;
 
+            setToken(newAccessToken);
+            setRefreshToken(newRefreshToken);
+            saveAccessToken(newAccessToken);
+            saveRefreshToken(newRefreshToken);
+
+            console.log('Token refreshed successfully');
+            return true;
+        } catch (error) {
+            console.error('Token refresh failed:', error);
+            logout();
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    }, [refreshToken, logout]);
+
+    const checkAndRefreshToken = useCallback(async () => {
+        if (!token) return false;
+
+        if (isTokenExpired(token)) {
+            console.log('Token expired, attempting refresh...');
+            return await refreshAccessToken();
+        }
+
+        return true;
+    }, [token, refreshAccessToken]);
+
+    // Set up token expiration check interval
+    useEffect(() => {
+        if (!token) return;
+
+        const interval = setInterval(() => {
+            checkAndRefreshToken();
+        }, 30000); // Check every 30 seconds
+
+        return () => clearInterval(interval);
+    }, [token, checkAndRefreshToken]);
+
+    // Handle OAuth callback
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -46,33 +97,36 @@ export const AuthProvider = ({ children }) => {
         if (code && !token) {
             window.history.replaceState({}, document.title, "/");
 
-            fetch(TOKEN_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    grant_type: 'authorization_code',
-                    client_id: CLIENT_ID,
-                    code: code,
-                    redirect_uri: REDIRECT_URI,
-                }),
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.access_token) {
-                        setToken(data.access_token);
-                        localStorage.setItem('access_token', data.access_token);
-                        console.log(data.access_token)
-                    } else {
-                        console.error("Token exchange failed:", data);
+            exchangeCodeForTokens(code)
+                .then((data) => {
+                    const newAccessToken = data.access_token;
+                    const newRefreshToken = data.refresh_token;
+
+                    setToken(newAccessToken);
+                    saveAccessToken(newAccessToken);
+
+                    if (newRefreshToken) {
+                        setRefreshToken(newRefreshToken);
+                        saveRefreshToken(newRefreshToken);
                     }
+
+                    console.log('Initial authentication successful');
                 })
-                .catch(err => console.error("Auth Error:", err));
+                .catch((err) => console.error("Auth Error:", err));
         }
     }, [token]);
 
-    return (
-        <AuthContext.Provider value={{ token, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    const value = {
+        token,
+        refreshToken,
+        login,
+        logout,
+        checkAndRefreshToken,
+        isLoading,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+
+

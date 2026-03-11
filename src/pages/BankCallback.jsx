@@ -1,39 +1,63 @@
-import {useEffect, useState, useContext} from 'react';
+import {useEffect, useState, useContext, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 import {AuthContext} from '../context/AuthContext';
+import {routeCallbackProcessing} from '../services';
+import {ROUTES, UI_CONFIG} from '../constants';
 import '../styles/BankCallback.css';
 
 const BankCallback = () => {
-    const [status, setStatus] = useState({type: 'info', text: 'Processing secure connection...'});
+    const [status, setStatus] = useState({
+        type: 'info',
+        text: 'Processing secure connection...',
+    });
+
     const navigate = useNavigate();
     const {token} = useContext(AuthContext);
+    const processedRef = useRef(false);
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
-        const error = params.get('error');
-
-        if (error) {
-            setStatus({type: 'error', text: `Connection Error: ${error}`});
+        // Prevent duplicate processing
+        if (processedRef.current) {
             return;
         }
 
-        if (code && token) {
-            axiosClient.get('/api/bank-connection/ceska-sporitelna', {
-                params: {code},
-                headers: {'Authorization': `Bearer ${token}`}
-            })
-                .then(() => {
-                    setStatus({type: 'success', text: 'Bank connected successfully! Redirecting...'});
-                    setTimeout(() => navigate('/'), 2000);
-                })
-                .catch(err => {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const bankId = params.get('bank_id') || sessionStorage.getItem('selectedBank');
+        const error = params.get('error');
+
+        const handleError = (message) => {
+            setStatus({type: 'error', text: message});
+        };
+
+        const handleSuccess = () => {
+            setStatus({
+                type: 'success',
+                text: 'Bank connected successfully! Redirecting...',
+            });
+            sessionStorage.removeItem('selectedBank');
+            setTimeout(() => navigate(ROUTES.BANKS), UI_CONFIG.CONFIRMATION_TIMEOUT);
+        };
+
+        if (error) {
+            handleError(`Connection Error: ${error}`);
+            return;
+        }
+
+        if (code && token && bankId) {
+            processedRef.current = true;
+            routeCallbackProcessing(bankId, code, axiosClient, token)
+                .then(handleSuccess)
+                .catch((err) => {
                     const errMsg = err.response?.data?.message || err.message;
-                    setStatus({type: 'error', text: `Failed: ${errMsg}`});
+                    handleError(`Failed: ${errMsg}`);
+                    sessionStorage.removeItem('selectedBank');
                 });
         } else if (code && !token) {
-            setStatus({type: 'error', text: 'Session expired. Please log in again.'});
+            handleError('Session expired. Please log in again.');
+        } else if (code && !bankId) {
+            handleError('Bank information missing. Please try again.');
         }
     }, [navigate, token]);
 
@@ -48,3 +72,4 @@ const BankCallback = () => {
 };
 
 export default BankCallback;
+
