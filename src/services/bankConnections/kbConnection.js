@@ -6,6 +6,7 @@
 export const handleKBConnection = (bank) => {
     const authUrl = import.meta.env.VITE_KB_AUTH_URL;
     const clientId = import.meta.env.VITE_KB_CLIENT_ID;
+    const scope = import.meta.env.VITE_KB_SCOPE;
     const redirectUri = `${window.location.origin}/bank-callback`;
     const state = 'random_security_string';
 
@@ -16,7 +17,8 @@ export const handleKBConnection = (bank) => {
         client_id: clientId,
         response_type: 'code',
         state: state,
-        access_type: 'offline'
+        access_type: 'offline',
+        scope: scope
     });
 
     window.location.href = `${authUrl}?${params.toString()}`;
