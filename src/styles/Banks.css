@@ -83,6 +83,62 @@
     display: inline-block;
 }
 
+.status-dot--connected {
+    background-color: #2e7d32; /* Green for connected */
+}
+
+.status-dot--disconnected {
+    background-color: #d32f2f; /* Red for disconnected */
+}
+
+/* Bank Card Actions Container */
+.bank-card__actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+}
+
+.btn-connect-again {
+    align-self: flex-start;
+    padding: 8px 18px;
+    background-color: transparent;
+    color: #1f7314;
+    border: 1px solid #12500b;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-connect-again:hover {
+    background-color: #f1f8f4;
+    border-color: #1f7314;
+}
+
+.btn-remove-bank {
+    align-self: flex-end;
+    padding: 8px 18px;
+    background-color: transparent;
+    color: #c53030;
+    border: 1px solid #c53030;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    text-align: center;
+}
+
+.btn-remove-bank:hover {
+    background-color: #fff5f5;
+    border-color: #c53030;
+}
+
 /* Disconnect Button */
 .btn-disconnect {
     align-self: flex-start;
@@ -147,4 +203,91 @@
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #1a202c;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #4a5568;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #1a202c;
+}
+
+.modal-banks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
+}
+
+.modal-bank-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: #f7fafc;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-bank-option:hover {
+    background-color: #ede7f6;
+    border-color: #5e35b1;
+    transform: translateY(-2px);
+}
+
+.modal-bank-option .bank-name {
+    font-size: 0.9rem;
+    text-align: center;
 }

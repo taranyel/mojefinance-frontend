@@ -1,75 +1,104 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import '../styles/Banks.css';
+import {ERROR_MESSAGES} from '../constants';
+import {routeBankConnection} from '../services';
+import {removeBankFromStorage} from '../utils';
+import {useFetchConnectedBanks} from '../hooks';
+import BankCard from '../components/BankCard';
+import BankSelectionModal from '../components/BankSelectionModal';
+import AddBankCard from '../components/AddBankCard';
 
 const Banks = () => {
-    // Mock Data mimicking the screenshot
-    const banks = [
-        { id: 1, name: 'Česká spořitelna', logo: 'Š', class: 'logo-csas', status: 'Active' },
-        { id: 2, name: 'ČSOB', logo: 'Č', class: 'logo-csob', status: 'Active' },
-        { id: 3, name: 'Raiffeisenbank', logo: 'R', class: 'logo-rb', status: 'Active' },
-    ];
+    const { connectedBanks: initialBanks } = useFetchConnectedBanks();
+    const [connectedBanks, setConnectedBanks] = useState(initialBanks);
+    const [showModal, setShowModal] = useState(false);
 
-    const handleDisconnect = (bankName) => {
-        if (window.confirm(`Are you sure you want to disconnect ${bankName}?`)) {
-            console.log("Disconnecting", bankName);
+    // Update state when initial banks are loaded
+    React.useEffect(() => {
+        setConnectedBanks(initialBanks);
+    }, [initialBanks]);
+
+    const handleOpenModal = useCallback(() => {
+        setShowModal(true);
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setShowModal(false);
+    }, []);
+
+    const handleDisconnect = useCallback((bankId, bankName) => {
+        const confirmMessage = ERROR_MESSAGES.DISCONNECT_CONFIRMATION(bankName);
+        if (window.confirm(confirmMessage)) {
+            console.log("Disconnecting", bankId);
+            // TODO: Implement disconnect API call
         }
-    };
+    }, []);
 
-    const handleConnectNew = () => {
-        // This logic mimics the original ConnectBank functionality
-        const authUrl = import.meta.env.VITE_CSAS_AUTH_URL;
-        const clientId = import.meta.env.VITE_CSAS_CLIENT_ID;
-        const redirectUri = `${window.location.origin}/bank-callback`;
-        const state = 'random_security_string';
+    const handleConnectBank = useCallback((bank) => {
+        try {
+            routeBankConnection(bank);
+        } catch (error) {
+            console.error('Bank connection error:', error);
+            const errorMessage = ERROR_MESSAGES.BANK_CONNECTION_FAILED(bank.name);
+            alert(errorMessage);
+        }
+    }, []);
 
-        const params = new URLSearchParams({
-            redirect_uri: redirectUri,
-            client_id: clientId,
-            response_type: 'code',
-            state: state,
-            access_type: 'offline'
-        });
+    const handleConnectAgain = useCallback((bank) => {
+        try {
+            routeBankConnection(bank);
+        } catch (error) {
+            console.error('Bank reconnection error:', error);
+            const errorMessage = ERROR_MESSAGES.BANK_CONNECTION_FAILED(bank.name);
+            alert(errorMessage);
+        }
+    }, []);
 
-        window.location.href = `${authUrl}?${params.toString()}`;
-    };
+
+    const handleRemoveBank = useCallback((bankId, bankName) => {
+        const confirmMessage = `Are you sure you want to permanently remove ${bankName}?`;
+        if (window.confirm(confirmMessage)) {
+            // Remove bank from state
+            setConnectedBanks((prevBanks) =>
+                prevBanks.filter((bank) => bank.id !== bankId)
+            );
+
+            // Remove bank from localStorage
+            removeBankFromStorage(bankId);
+
+            console.log("Bank removed", bankId);
+            // TODO: Implement remove bank API call
+        }
+    }, []);
 
     return (
         <div className="banks-container">
             <div className="banks-grid">
                 {/* Render Connected Banks */}
-                {banks.map((bank) => (
-                    <div key={bank.id} className="bank-card">
-                        <div className="bank-header-row">
-                            <div className={`bank-logo ${bank.class}`}>
-                                {bank.logo}
-                            </div>
-                            <h3 className="bank-name">{bank.name}</h3>
-                        </div>
-
-                        <div className="bank-status">
-                            Connection status: <strong>{bank.status}</strong>
-                            <span className="status-dot"></span>
-                        </div>
-
-                        <button
-                            className="btn-disconnect"
-                            onClick={() => handleDisconnect(bank.name)}
-                        >
-                            Disconnect
-                        </button>
-                    </div>
+                {connectedBanks.map((bank) => (
+                    <BankCard
+                        key={bank.id}
+                        bank={bank}
+                        onDisconnect={handleDisconnect}
+                        onConnectAgain={handleConnectAgain}
+                        onRemoveBank={handleRemoveBank}
+                    />
                 ))}
 
-                {/* Connect New Bank Card */}
-                <div className="add-bank-card" onClick={handleConnectNew}>
-                    <div className="plus-circle">
-                        <span className="plus-icon">+</span>
-                    </div>
-                    <span className="add-text">Connect new bank</span>
-                </div>
+                {/* Add Bank Card */}
+                <AddBankCard onClick={handleOpenModal}/>
             </div>
+
+            {/* Bank Selection Modal */}
+            <BankSelectionModal
+                isOpen={showModal}
+                onClose={handleCloseModal}
+                connectedBanks={connectedBanks}
+                onSelectBank={handleConnectBank}
+            />
         </div>
     );
 };
 
 export default Banks;
+

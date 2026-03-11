@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -7,10 +7,17 @@ import Dashboard from './pages/Dashboard';
 import Banks from './pages/Banks';
 import BankCallback from './pages/BankCallback';
 import {AuthContext} from './context/AuthContext';
+import {initializeAxiosWithAuth} from './api/axiosClient';
 import './styles/App.css';
 
 function App() {
-    const {token} = useContext(AuthContext);
+    const authContext = useContext(AuthContext);
+    const {token} = authContext;
+
+    // Initialize axios with auth context for token refresh
+    useEffect(() => {
+        initializeAxiosWithAuth(authContext);
+    }, [authContext]);
 
     return (
         <BrowserRouter>
