@@ -2,6 +2,7 @@
  * Česká spořitelna (ČSAS) Bank Connection Handler
  * Handles OAuth2 flow specific to Česká spořitelna
  */
+import {API_CONFIG} from '../../constants';
 
 export const handleCeskaSporitelnaConnection = (bank) => {
     const authUrl = import.meta.env.VITE_CSAS_AUTH_URL;
@@ -25,15 +26,21 @@ export const handleCeskaSporitelnaConnection = (bank) => {
 /**
  * Process callback from Česká spořitelna
  */
-export const processCeskaSporiitelnaCallback = async (code, axiosClient, token) => {
+export const processCeskaSporitelnaCallback = async (bankId, code, axiosClient, token) => {
     if (!code || !token) {
         throw new Error('Missing authorization code or token');
     }
 
-    const response = await axiosClient.get('/api/banks/connect/ceska-sporitelna', {
-        params: {code},
-        headers: {'Authorization': `Bearer ${token}`}
-    });
+    const response = await axiosClient.post(
+        API_CONFIG.ENDPOINTS.BANK_CONNECT,
+        {
+            clientRegistrationId: bankId,
+            bankName: "Ceska Sporitelna"
+        },
+        {
+            params: { code }
+        }
+    );
 
     return response.data;
 };

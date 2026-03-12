@@ -1,11 +1,15 @@
 import axiosClient from '../../api/axiosClient';
+import {API_CONFIG} from "../../constants";
 
 export const handleRaiffeisenBankConnection = async (bank) => {
     try {
-        const code = import.meta.env.VITE_CSOB_CODE;
-        const response = await axiosClient.get('/api/banks/connect/csob', {
-            params: {code}
-        });
+        const response = await axiosClient.post(
+            API_CONFIG.ENDPOINTS.BANK_CONNECT,
+            {
+                clientRegistrationId: bank.id,
+                bankName: bank.name
+            }
+        );
 
         return response.data;
     } catch (error) {

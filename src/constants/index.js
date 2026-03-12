@@ -15,7 +15,8 @@ export const API_CONFIG = {
     BASE_URL: import.meta.env.API_BASE_URL || '/',
     ENDPOINTS: {
         BANKS: '/api/banks',
-        BANK_CONNECT: (bankId) => `/api/banks/connect/${bankId}`,
+        BANK_CONNECT: `/api/banks/connect`,
+        BANK_DISCONNECT: (bankId) => `/api/banks/disconnect/${bankId}`,
     },
     TIMEOUT: 30000,
 };
@@ -99,7 +100,7 @@ export const AVAILABLE_BANKS = [
     },
     {
         id: 'reiffeisen-bank',
-        name: 'Raiffeisenbank',
+        name: 'Raiffeisen Bank',
         logo: 'R',
         class: 'logo-rb',
         authUrlEnv: 'VITE_RB_AUTH_URL',
@@ -111,6 +112,7 @@ export const AVAILABLE_BANKS = [
 export const ERROR_MESSAGES = {
     MISSING_CONFIG: 'Configuration missing! Please check your .env file and restart the server.',
     BANK_CONNECTION_FAILED: (bankName) => `Failed to connect to ${bankName}. Please try again.`,
+    BANK_DISCONNECTION_FAILED: (bankName) => `Failed to disconnect ${bankName}. Please try again.`,
     DISCONNECT_CONFIRMATION: (bankName) => `Are you sure you want to disconnect ${bankName}?`,
     NO_REFRESH_TOKEN: 'No refresh token available',
     TOKEN_REFRESH_FAILED: 'Token refresh failed',

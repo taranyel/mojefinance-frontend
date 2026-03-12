@@ -2,6 +2,7 @@
  * Komerční banka (KB) Connection Handler
  * Handles OAuth2 flow specific to KB
  */
+import {API_CONFIG} from "../../constants";
 
 export const handleKBConnection = (bank) => {
     const authUrl = import.meta.env.VITE_KB_AUTH_URL;
@@ -27,15 +28,21 @@ export const handleKBConnection = (bank) => {
 /**
  * Process callback from KB
  */
-export const processKBCallback = async (code, axiosClient, token) => {
+export const processKBCallback = async (bankId, code, axiosClient, token) => {
     if (!code || !token) {
         throw new Error('Missing authorization code or token');
     }
 
-    const response = await axiosClient.get('/api/banks/connect/kb', {
-        params: {code},
-        headers: {'Authorization': `Bearer ${token}`}
-    });
+    const response = await axiosClient.post(
+        API_CONFIG.ENDPOINTS.BANK_CONNECT,
+        {
+            clientRegistrationId: bankId,
+            bankName: "KB"
+        },
+        {
+            params: { code }
+        }
+    );
 
     return response.data;
 };

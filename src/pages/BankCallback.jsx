@@ -24,7 +24,8 @@ const BankCallback = () => {
 
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
-        const bankId = params.get('bank_id') || sessionStorage.getItem('selectedBank');
+        const bankId = sessionStorage.getItem('selectedBank');
+        console.log("bank id: " + bankId)
         const error = params.get('error');
 
         const handleError = (message) => {

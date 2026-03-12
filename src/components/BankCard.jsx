@@ -6,8 +6,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const BankCard = ({bank, onDisconnect, onConnectAgain, onRemoveBank}) => {
-    const isDisconnected = bank.status === 'disconnected';
+const BankCard = ({bank, onDisconnect, onConnectAgain}) => {
+    const isDisconnected = bank.status === 'DISCONNECTED';
 
     const handleDisconnectClick = () => {
         onDisconnect(bank.id, bank.name);
@@ -15,10 +15,6 @@ const BankCard = ({bank, onDisconnect, onConnectAgain, onRemoveBank}) => {
 
     const handleConnectAgainClick = () => {
         onConnectAgain(bank);
-    };
-
-    const handleRemoveBankClick = () => {
-        onRemoveBank(bank.id, bank.name);
     };
 
     return (
@@ -32,7 +28,7 @@ const BankCard = ({bank, onDisconnect, onConnectAgain, onRemoveBank}) => {
 
             <div className="bank-status">
                 Connection status: <strong>{bank.status}</strong>
-                <span className={`status-dot status-dot--${bank.status}`}></span>
+                <span className={`status-dot status-dot--${bank.status.toLowerCase()}`}></span>
             </div>
 
             {isDisconnected ? (
@@ -46,7 +42,7 @@ const BankCard = ({bank, onDisconnect, onConnectAgain, onRemoveBank}) => {
                     </button>
                     <button
                         className="btn-remove-bank"
-                        onClick={handleRemoveBankClick}
+                        onClick={handleDisconnectClick}
                         aria-label={`Remove ${bank.name}`}
                     >
                         Remove bank
@@ -75,7 +71,6 @@ BankCard.propTypes = {
     }).isRequired,
     onDisconnect: PropTypes.func.isRequired,
     onConnectAgain: PropTypes.func.isRequired,
-    onRemoveBank: PropTypes.func.isRequired,
 };
 
 export default BankCard;

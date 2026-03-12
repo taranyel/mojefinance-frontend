@@ -10,11 +10,6 @@ export {
     mapBackendBankToComponent,
     parseBanksFromResponse,
     getAvailableBanksToConnect,
-    getAllAvailableBanks,
-    getPreviouslyConnectedBanks,
-    savePreviouslyConnectedBanks,
-    detectDisconnectedBanks,
-    mergeWithDisconnectedBanks,
-    removeBankFromStorage,
+    getAllAvailableBanks
 } from './bankUtils';
 
