@@ -17,6 +17,7 @@ export const API_CONFIG = {
         BANKS: '/api/banks',
         BANK_CONNECT: `/api/banks/connect`,
         BANK_DISCONNECT: (bankId) => `/api/banks/disconnect/${bankId}`,
+        PRODUCTS: '/api/products'
     },
     TIMEOUT: 30000,
 };

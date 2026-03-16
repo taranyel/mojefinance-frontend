@@ -1,0 +1,142 @@
+/* Page Layout */
+.accounts-container {
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.accounts-grid {
+    display: grid;
+    /* Adjusted minmax to match the 3-column layout in the screenshot */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+/* Loading, Error, and Empty States */
+.loading-message,
+.error-message,
+.empty-message {
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.loading-message { color: #4a5568; font-size: 1rem; }
+.error-message { background-color: #fff5f5; color: #c53030; font-size: 1rem; border: 1px solid #feb2b2; }
+.empty-message { color: #718096; font-size: 1rem; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* =========================================
+   Product Card Styles (Matches Screenshot)
+   ========================================= */
+
+.product-card {
+    /* Background matches the light lavender/blue in the design */
+    background-color: #E6E6F5;
+    border-radius: 4px; /* Sharp, minimal rounded corners */
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    color: #000;
+    transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Header: Logo + Account Name & Category */
+.product-header-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* Placeholder for the circular bank logo */
+.product-bank-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #fff;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.product-header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-account-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+}
+
+.product-category {
+    font-size: 0.85rem;
+    color: #4A4A4A;
+    margin: 2px 0 0 0;
+}
+
+/* Data Labels (Small grey text above values) */
+.data-label {
+    font-size: 0.75rem;
+    color: #4A4A4A;
+    margin: 0 0 4px 0;
+}
+
+/* Main Balance */
+.main-balance-amount {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+}
+
+/* The dark horizontal line */
+.divider {
+    height: 1px;
+    background-color: #2D3748;
+    width: 100%;
+    margin: 0 0 20px 0;
+    opacity: 0.8;
+}
+
+/* Stacked details (Available Balance, IBAN, etc.) */
+.details-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .accounts-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .product-card {
+        padding: 20px;
+    }
+}

@@ -24,10 +24,13 @@ const Sidebar = () => {
                     <span>Transactions</span>
                 </div>
 
-                <div className="menu-item disabled">
+                <NavLink
+                    to="/accounts"
+                    className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
+                >
                     <span className="icon">💳</span>
                     <span>Accounts</span>
-                </div>
+                </NavLink>
 
                 <NavLink
                     to="/banks"
