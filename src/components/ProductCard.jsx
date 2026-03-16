@@ -13,8 +13,8 @@ const ProductCard = ({ product }) => {
     } = product;
 
     // Format the currency nicely (e.g., 10 500.00 CZK)
-    const formattedBalance = balance?.amount !== undefined
-        ? balance.amount + ' ' + balance.currency
+    const formattedBalance = balance?.value !== undefined
+        ? balance.value + ' ' + balance.currency
         : 'Balance unavailable';
 
     return (

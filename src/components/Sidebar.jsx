@@ -19,10 +19,13 @@ const Sidebar = () => {
                     <span>Dashboard</span>
                 </NavLink>
 
-                <div className="menu-item disabled">
+                <NavLink
+                    to="/transactions"
+                    className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
+                >
                     <span className="icon">↔️</span>
                     <span>Transactions</span>
-                </div>
+                </NavLink>
 
                 <NavLink
                     to="/accounts"

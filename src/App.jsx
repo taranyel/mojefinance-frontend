@@ -10,6 +10,7 @@ import BankCallback from './pages/BankCallback';
 import {AuthContext} from './context/AuthContext';
 import {initializeAxiosWithAuth} from './api/axiosClient';
 import './styles/App.css';
+import Transactions from "./pages/Transactions";
 
 function App() {
     const authContext = useContext(AuthContext);
@@ -59,6 +60,15 @@ function App() {
                                     </>
                                 ) : <Navigate to="/"/>
                             }/>
+
+                            <Route path="/transactions" element={
+                                token ? (
+                                    <>
+                                        <Header title="Transactions Overview" />
+                                        <Transactions />
+                                    </>
+                                ) : <Navigate to="/" />
+                            } />
 
                             <Route path="/bank-callback" element={<BankCallback/>}/>
 
