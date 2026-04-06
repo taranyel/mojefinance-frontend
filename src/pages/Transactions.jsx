@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchProducts } from "../services/productService";
 import { fetchTransactions } from "../services/transactionService";
 import '../styles/Transactions.css';
@@ -12,15 +12,16 @@ const Transactions = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('All');
 
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
+
     const [groupedTransactions, setGroupedTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // 2. Create the ref to track if we already fetched
     const fetchedRef = useRef(false);
 
     // 1. Fetch Accounts / Products
     useEffect(() => {
-        // 3. Block the strict-mode double call
         if (fetchedRef.current) return;
         fetchedRef.current = true;
 
@@ -29,7 +30,6 @@ const Transactions = () => {
                 setLoading(true);
                 const data = await fetchProducts();
                 setProducts(data);
-                // Automatically select the first account if available
                 if (data && data.length > 0) {
                     setSelectedAccount(data[0]);
                 }
@@ -45,29 +45,49 @@ const Transactions = () => {
         loadProducts();
     }, []);
 
-    // 2. Fetch Grouped Transactions using your new service function
+    const accountId = selectedAccount?.productId;
+    const bankId = selectedAccount?.bankDetails?.clientRegistrationId;
+
+    // 2. Fetch Grouped Transactions
     useEffect(() => {
-        if (!selectedAccount) return;
+        if (!accountId || !bankId) return;
+
+        let isActive = true;
 
         const loadTransactions = async () => {
             setIsLoading(true);
             try {
-                // Ensure we pass both variables required by your new function
-                const accountId = selectedAccount.productId;
-                const clientRegistrationId = selectedAccount.bankDetails.clientRegistrationId;
+                const data = await fetchTransactions(accountId, bankId, fromDate, toDate);
 
-                const data = await fetchTransactions(accountId, clientRegistrationId);
-                setGroupedTransactions(data || []);
+                if (isActive) {
+                    setGroupedTransactions(data || []);
+                    setIsLoading(false);
+                }
             } catch (error) {
-                console.error('Failed to fetch transactions:', error);
-                setGroupedTransactions([]);
-            } finally {
-                setIsLoading(false);
+                if (isActive) {
+                    console.error('Failed to fetch transactions:', error);
+                    setGroupedTransactions([]);
+                    setIsLoading(false);
+                }
             }
         };
 
-        loadTransactions();
-    }, [selectedAccount]);
+        const timeoutId = setTimeout(() => {
+            loadTransactions();
+        }, 300);
+
+        return () => {
+            isActive = false;
+            clearTimeout(timeoutId);
+        };
+    }, [accountId, bankId, fromDate, toDate]);
+
+    const handleAccountChange = (acc) => {
+        setSelectedAccount(acc);
+        setIsDropdownOpen(false);
+        setFromDate('');
+        setToDate('');
+    };
 
     if (loading) {
         return (
@@ -85,40 +105,89 @@ const Transactions = () => {
         );
     }
 
-    // Helper to format amount exactly as backend provides it
     const formatAmount = (amountObj) => {
         if (!amountObj) return '0.00 CZK';
         const sign = amountObj.value > 0 ? '+' : '';
         return `${sign}${amountObj.value} ${amountObj.currency}`;
     };
 
-    // Calculate simple totals directly from the array returned by your service
-    const calculateSummary = () => {
-        let income = 0;
-        let expenses = 0;
-        const categories = {};
+    const formatYAxis = (val) => {
+        if (val === 0) return '0';
+        if (val >= 1000) return (val / 1000).toFixed(0) + 'K';
+        return val.toFixed(0);
+    };
+
+    // --- UPDATED LOGIC FOR NEW BACKEND SCHEMA ---
+    const extractChartAndSummaryData = () => {
+        let globalIncome = 0;
+        let globalExpenses = 0;
+        const globalCategories = {};
+
+        const chartData = [];
+        let dataMax = 0;
 
         groupedTransactions.forEach(month => {
-            month.groupedByCategory?.forEach(cat => {
-                const val = cat.totalAmount?.value || 0;
-                if (val > 0) income += val;
-                else expenses += val;
+            let monthIncome = 0;
+            let monthExpense = 0;
 
-                if (!categories[cat.groupName]) {
-                    categories[cat.groupName] = { ...cat.totalAmount, value: 0 };
+            month.groupedByCategory?.forEach(category => {
+                // Read from the new separated objects.
+                // Math.abs ensures Income is strictly positive and Expense is strictly negative,
+                // regardless of whether your backend sends expenses as positive or negative numbers.
+                const incVal = Math.abs(category.totalIncome?.value || 0);
+                const expVal = -Math.abs(category.totalExpense?.value || 0);
+
+                // Tally for the specific month's Chart columns
+                monthIncome += incVal;
+                monthExpense += Math.abs(expVal); // chart columns need positive heights
+
+                // Tally for the Global Summary in the right sidebar
+                globalIncome += incVal;
+                globalExpenses += expVal;
+
+                // Calculate Net Value for the category list
+                const netVal = incVal + expVal;
+                const currency = category.totalIncome?.currency || category.totalExpense?.currency || 'CZK';
+
+                if (!globalCategories[category.groupName]) {
+                    globalCategories[category.groupName] = { value: 0, currency: currency };
                 }
-                categories[cat.groupName].value += val;
+                globalCategories[category.groupName].value += netVal;
+            });
+
+            if (monthIncome > dataMax) dataMax = monthIncome;
+            if (monthExpense > dataMax) dataMax = monthExpense;
+
+            chartData.push({
+                label: month.groupName.substring(0, 3),
+                income: monthIncome,
+                expense: monthExpense
             });
         });
 
+        let chartMax = 1000;
+        if (dataMax > 0) {
+            const magnitude = Math.pow(10, Math.floor(Math.log10(dataMax)));
+            chartMax = Math.ceil(dataMax / magnitude) * magnitude;
+        }
+
         return {
-            income,
-            expenses,
-            categories: Object.entries(categories).map(([name, amount]) => ({ name, amount }))
+            income: globalIncome,
+            expenses: globalExpenses,
+            categories: Object.entries(globalCategories).map(([name, amount]) => ({ name, amount })),
+            chartData,
+            chartMax
         };
     };
 
-    const summary = calculateSummary();
+    const summary = extractChartAndSummaryData();
+
+    const chartLines = [
+        summary.chartMax,
+        summary.chartMax * (2/3),
+        summary.chartMax * (1/3),
+        0
+    ];
 
     return (
         <div className="transactions-container">
@@ -126,17 +195,17 @@ const Transactions = () => {
 
                 {/* ================= LEFT COLUMN ================= */}
                 <div className="tx-left-col">
-
-                    {/* Account Dropdown */}
                     <div className="tx-account-selector">
                         <div
                             className={`tx-selector-box ${isDropdownOpen ? 'active' : ''}`}
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         >
                             <div className="tx-selector-info">
-                                <div className="tx-acc-icon">
-                                    {selectedAccount.bankDetails.bankName?.charAt(0) || '🏦'}
-                                </div>
+                                <img
+                                    src={`/bank-logos/${selectedAccount.bankDetails.clientRegistrationId}.png`}
+                                    alt={`${selectedAccount.bankDetails.bankName || 'Bank'} Logo`}
+                                    className="tx-bank-logo"
+                                />
                                 <div className="tx-acc-details">
                                     <h4>{selectedAccount.accountName}</h4>
                                     <p>{selectedAccount.productIdentification.iban}</p>
@@ -151,12 +220,13 @@ const Transactions = () => {
                                     <div
                                         key={idx}
                                         className="tx-dropdown-item"
-                                        onClick={() => {
-                                            setSelectedAccount(acc);
-                                            setIsDropdownOpen(false);
-                                        }}
+                                        onClick={() => handleAccountChange(acc)}
                                     >
-                                        <div className="tx-acc-icon sm">{acc.bankDetails.bankName?.charAt(0) || '🏦'}</div>
+                                        <img
+                                            src={`/bank-logos/${acc.bankDetails.clientRegistrationId}.png`}
+                                            alt={`${acc.bankDetails.bankName || 'Bank'} Logo`}
+                                            className="tx-dr-bank-logo"
+                                        />
                                         <div className="tx-acc-details">
                                             <h4>{acc.accountName}</h4>
                                             <p>{acc.productIdentification.iban}</p>
@@ -167,25 +237,44 @@ const Transactions = () => {
                         )}
                     </div>
 
-                    {/* Filter Tabs */}
-                    <div className="tx-tabs">
-                        {['All', 'Expenses', 'Income'].map(tab => (
-                            <button
-                                key={tab}
-                                className={`tx-tab ${activeTab === tab ? 'active' : ''}`}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab}
-                            </button>
-                        ))}
+                    <div className="tx-controls-row">
+                        <div className="tx-tabs">
+                            {['All', 'Expenses', 'Income'].map(tab => (
+                                <button
+                                    key={tab}
+                                    className={`tx-tab ${activeTab === tab ? 'active' : ''}`}
+                                    onClick={() => setActiveTab(tab)}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="tx-date-filters">
+                            <div className="tx-date-input">
+                                <label>From</label>
+                                <input
+                                    type="date"
+                                    value={fromDate}
+                                    onChange={(e) => setFromDate(e.target.value)}
+                                />
+                            </div>
+                            <div className="tx-date-input">
+                                <label>To</label>
+                                <input
+                                    type="date"
+                                    value={toDate}
+                                    onChange={(e) => setToDate(e.target.value)}
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Transaction List */}
                     <div className="tx-list">
                         {isLoading ? (
                             <div className="tx-message">Loading transactions...</div>
                         ) : groupedTransactions.length === 0 ? (
-                            <div className="tx-message">No transactions found.</div>
+                            <div className="tx-message">No transactions found for the selected period.</div>
                         ) : (
                             groupedTransactions.map((month, mIdx) => (
                                 <div key={mIdx} className="tx-month-group">
@@ -222,8 +311,6 @@ const Transactions = () => {
 
                 {/* ================= RIGHT COLUMN ================= */}
                 <div className="tx-right-col">
-
-                    {/* Chart Area */}
                     <div className="tx-card">
                         <div className="tx-card-header">
                             <h3>Cash flow</h3>
@@ -233,26 +320,50 @@ const Transactions = () => {
                             </div>
                         </div>
 
-                        {/* Pure CSS Visual Chart */}
                         <div className="tx-chart-visual">
+
                             <div className="tx-chart-lines">
-                                <span>50K</span><div className="tx-line"></div>
-                                <span>10K</span><div className="tx-line"></div>
-                                <span>2K</span><div className="tx-line"></div>
-                                <span>0</span><div className="tx-line"></div>
+                                {chartLines.map((lineVal, idx) => (
+                                    <React.Fragment key={idx}>
+                                        <span>{formatYAxis(lineVal)}</span>
+                                        <div className="tx-line"></div>
+                                    </React.Fragment>
+                                ))}
                             </div>
+
                             <div className="tx-chart-columns">
-                                <div className="tx-col"><div className="tx-bars"><div className="tx-bar inc" style={{height: '40%'}}></div><div className="tx-bar exp" style={{height: '25%'}}></div></div><span>Aug</span></div>
-                                <div className="tx-col"><div className="tx-bars"><div className="tx-bar inc" style={{height: '30%'}}></div><div className="tx-bar exp" style={{height: '35%'}}></div></div><span>Sept</span></div>
-                                <div className="tx-col"><div className="tx-bars"><div className="tx-bar inc" style={{height: '80%'}}></div><div className="tx-bar exp" style={{height: '50%'}}></div></div><span>Oct</span></div>
-                                <div className="tx-col"><div className="tx-bars"><div className="tx-bar inc" style={{height: '60%'}}></div><div className="tx-bar exp" style={{height: '40%'}}></div></div><span>Nov</span></div>
-                                <div className="tx-col active"><div className="tx-bars"><div className="tx-bar inc" style={{height: '55%'}}></div><div className="tx-bar exp" style={{height: '65%'}}></div></div><span>Dec</span></div>
-                                <div className="tx-col"><div className="tx-bars"><div className="tx-bar inc" style={{height: '15%'}}></div><div className="tx-bar exp" style={{height: '8%'}}></div></div><span>Jan</span></div>
+                                {summary.chartData.length === 0 ? (
+                                    <div style={{ alignSelf: 'center', color: '#a0aec0', fontSize: '0.9rem', width: '100%', textAlign: 'center' }}>
+                                        No data to display
+                                    </div>
+                                ) : (
+                                    summary.chartData.map((data, idx) => {
+                                        const incHeight = (data.income / summary.chartMax) * 100;
+                                        const expHeight = (data.expense / summary.chartMax) * 100;
+
+                                        return (
+                                            <div key={idx} className="tx-col">
+                                                <div className="tx-bars">
+                                                    <div
+                                                        className="tx-bar inc"
+                                                        style={{ height: `${incHeight}%` }}
+                                                        title={`Income: ${data.income.toFixed(2)}`}
+                                                    ></div>
+                                                    <div
+                                                        className="tx-bar exp"
+                                                        style={{ height: `${expHeight}%` }}
+                                                        title={`Expense: ${data.expense.toFixed(2)}`}
+                                                    ></div>
+                                                </div>
+                                                <span>{data.label}</span>
+                                            </div>
+                                        );
+                                    })
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    {/* Summary Totals */}
                     <div className="tx-summary-totals">
                         <div className="tx-total-val income">
                             <span className="tx-arrow">^</span> Income: {summary.income > 0 ? '+' : ''}{summary.income.toFixed(2)} CZK
@@ -262,7 +373,6 @@ const Transactions = () => {
                         </div>
                     </div>
 
-                    {/* Category Breakdown */}
                     <div className="tx-categories-card">
                         {!isLoading && summary.categories.map((cat, idx) => (
                             <div key={idx} className="tx-cat-item">

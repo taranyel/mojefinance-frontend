@@ -48,6 +48,24 @@
     gap: 12px;
 }
 
+.tx-dr-bank-logo {
+    width:33px;
+    height: 33px;
+    border-radius: 50%;
+    background-color: #fff;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.tx-bank-logo {
+    width:40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
 .tx-acc-icon {
     width: 36px;
     height: 36px;
@@ -392,6 +410,58 @@
 }
 .tx-cat-amount.expense { color: #e53e3e; }
 .tx-cat-amount.income { color: #38a169; }
+
+/* Container for both Tabs and Date Pickers */
+.tx-controls-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allows stacking on smaller screens */
+    gap: 16px;
+}
+
+/* Date Filters Styling */
+.tx-date-filters {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.tx-date-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tx-date-input label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.tx-date-input input[type="date"] {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #1a202c;
+    background-color: #f7fafc;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.tx-date-input input[type="date"]:hover,
+.tx-date-input input[type="date"]:focus {
+    border-color: #5e35b1;
+    background-color: white;
+    outline: none;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }

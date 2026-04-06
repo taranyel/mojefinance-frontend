@@ -18,7 +18,7 @@ export const routeBankConnection = (bank) => {
         'csob': handleCSOBConnection,
         'kb': handleKBConnection,
         'air-bank': handleAirBankConnection,
-        'reiffeisen-bank': handleRaiffeisenBankConnection,
+        'raiffeisen-bank': handleRaiffeisenBankConnection,
     };
 
     const handler = connectionHandlers[bank.id];

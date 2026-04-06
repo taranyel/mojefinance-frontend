@@ -18,7 +18,7 @@ export const API_CONFIG = {
         BANK_CONNECT: `/api/banks/connect`,
         BANK_DISCONNECT: (bankId) => `/api/banks/disconnect/${bankId}`,
         PRODUCTS: '/api/products',
-        TRANSACTIONS: (accountId) => `/api/products/${accountId}/transactions`
+        TRANSACTIONS: (clientRegistrationId, accountId) => `/api/products/${clientRegistrationId}/${accountId}/transactions`
     },
     TIMEOUT: 30000,
 };
@@ -101,7 +101,7 @@ export const AVAILABLE_BANKS = [
         clientIdEnv: 'VITE_AIRBANK_CLIENT_ID',
     },
     {
-        id: 'reiffeisen-bank',
+        id: 'raiffeisen-bank',
         name: 'Raiffeisen Bank',
         logo: 'R',
         class: 'logo-rb',

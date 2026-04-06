@@ -1,11 +1,11 @@
 import axiosClient from '../api/axiosClient';
 import { API_CONFIG } from "../constants";
 
-export const fetchTransactions = async (accountId, clientRegistrationId) => {
+export const fetchTransactions = async (accountId, clientRegistrationId, fromDate, toDate) => {
     const response = await axiosClient.get(
-        API_CONFIG.ENDPOINTS.TRANSACTIONS(accountId),
+        API_CONFIG.ENDPOINTS.TRANSACTIONS(clientRegistrationId, accountId),
         {
-            params: { clientRegistrationId }
+            params: { fromDate, toDate }
         }
     );
     console.log(response);

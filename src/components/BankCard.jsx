@@ -20,9 +20,16 @@ const BankCard = ({bank, onDisconnect, onConnectAgain}) => {
     return (
         <div className={`bank-card ${isDisconnected ? 'bank-card--disconnected' : ''}`}>
             <div className="bank-header-row">
-                <div className={`bank-logo ${bank.class}`}>
-                    {bank.logo}
-                </div>
+                <img
+                    className={`bank-logo`}
+                    src={`/bank-logos/${bank.id}.png`}
+                    alt={`${bank.name || 'Bank'} Logo`}
+                    onError={(e) => {
+                        // Optional fallback: If the specific bank logo is missing, show a default
+                        e.target.onerror = null;
+                        e.target.src = '/bank-logos/default-bank.png';
+                    }}
+                />
                 <h3 className="bank-name">{bank.name}</h3>
             </div>
 

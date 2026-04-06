@@ -20,17 +20,22 @@ const ProductCard = ({ product }) => {
     return (
         <div className="product-card">
 
-            {/* 1. Header with Logo and Titles */}
             <div className="product-header-row">
-                {/* Replace src with your actual bank logo logic */}
-                <img src="/bank-logo-placeholder.png" alt="Bank Logo" className="product-bank-logo" />
+                <img
+                    src={`/bank-logos/${bankDetails.clientRegistrationId}.png`}
+                    alt={`${bankDetails.bankName || 'Bank'} Logo`}
+                    className="product-bank-logo"
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/banks/default-bank.png';
+                    }}
+                />
                 <div className="product-header-text">
                     <h3 className="product-account-name">{accountName || 'Unnamed Account'}</h3>
                     <p className="product-category">{productCategory || 'Account'}</p>
                 </div>
             </div>
 
-            {/* 2. Main Balance */}
             <p className="data-label">Balance</p>
             <h2 className="main-balance-amount">{formattedBalance}</h2>
 

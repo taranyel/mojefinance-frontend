@@ -41,22 +41,13 @@
 }
 
 .bank-logo {
-    width: 48px;
-    height: 48px;
+    width:60px;
+    height: 60px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 1.4rem;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    background-color: #fff;
+    flex-shrink: 0;
+    object-fit: contain;
 }
-
-/* Brand Colors */
-.logo-csas { background-color: #0061A0; } /* CSAS Blue */
-.logo-csob { background-color: #0093dd; } /* CSOB Light Blue */
-.logo-rb   { background-color: #fec900; color: black; } /* RB Yellow */
 
 .bank-name {
     font-size: 1.1rem;

@@ -52,9 +52,16 @@ const BankSelectionModal = ({isOpen, onClose, connectedBanks, onSelectBank}) => 
                                 }
                             }}
                         >
-                            <div className={`bank-logo ${bank.class}`}>
-                                {bank.logo}
-                            </div>
+                            {/* Elements sit directly inside the flex-column container */}
+                            <img
+                                className={`bank-logo ${bank.class}`}
+                                src={`/bank-logos/${bank.id}.png`}
+                                alt={`${bank.name || 'Bank'} Logo`}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/bank-logos/default-bank.png';
+                                }}
+                            />
                             <p className="bank-name">{bank.name}</p>
                         </div>
                     ))}
@@ -72,5 +79,3 @@ BankSelectionModal.propTypes = {
 };
 
 export default BankSelectionModal;
-
-
