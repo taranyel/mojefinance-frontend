@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fetchProducts } from '../services/productService';
 import ProductCard from '../components/ProductCard';
 import '../styles/Accounts.css';
@@ -8,7 +8,14 @@ const Accounts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // 1. Create a ref to track if the fetch has already happened
+    const fetchedRef = useRef(false);
+
     useEffect(() => {
+        // 2. If it already ran, exit early to block the Strict Mode double-call
+        if (fetchedRef.current) return;
+        fetchedRef.current = true;
+
         const loadProducts = async () => {
             try {
                 setLoading(true);
@@ -62,4 +69,3 @@ const Accounts = () => {
 };
 
 export default Accounts;
-
