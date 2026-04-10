@@ -18,6 +18,7 @@ export const API_CONFIG = {
         BANK_CONNECT: `/api/banks/connect`,
         BANK_DISCONNECT: (bankId) => `/api/banks/disconnect/${bankId}`,
         PRODUCTS: '/api/products',
+        ASSETS_LIABILITIES: '/api/products/assets-liabilities',
         TRANSACTIONS: (clientRegistrationId, accountId) => `/api/products/${clientRegistrationId}/${accountId}/transactions`
     },
     TIMEOUT: 30000,
@@ -86,7 +87,7 @@ export const AVAILABLE_BANKS = [
     },
     {
         id: 'kb',
-        name: 'KB',
+        name: 'Komerční banka ',
         logo: 'K',
         class: 'logo-kb',
         authUrlEnv: 'VITE_KB_AUTH_URL',

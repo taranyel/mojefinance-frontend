@@ -37,7 +37,7 @@
 
 .product-card {
     /* Background matches the light lavender/blue in the design */
-    background-color: #E6E6F5;
+    background-color: #dee8ef;
     border-radius: 4px; /* Sharp, minimal rounded corners */
     padding: 24px;
     display: flex;
@@ -128,6 +128,38 @@
     font-weight: 700;
     color: #000;
     margin: 0;
+}
+
+/* Filter Controls */
+.accounts-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.accounts-filter-row label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.accounts-select {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 180px;
+}
+
+.accounts-select:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
 }
 
 /* Responsive */

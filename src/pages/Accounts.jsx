@@ -8,11 +8,12 @@ const Accounts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // 1. Create a ref to track if the fetch has already happened
+    // New state for the active filter
+    const [selectedBank, setSelectedBank] = useState('All');
+
     const fetchedRef = useRef(false);
 
     useEffect(() => {
-        // 2. If it already ran, exit early to block the Strict Mode double-call
         if (fetchedRef.current) return;
         fetchedRef.current = true;
 
@@ -20,7 +21,7 @@ const Accounts = () => {
             try {
                 setLoading(true);
                 const data = await fetchProducts();
-                setProducts(data);
+                setProducts(data || []);
                 setError(null);
             } catch (err) {
                 console.error('Failed to fetch products:', err);
@@ -44,26 +45,51 @@ const Accounts = () => {
     if (error) {
         return (
             <div className="accounts-container">
-                <div className="error-message">{error}</div>
+                <div className="error-message" style={{ color: 'red' }}>{error}</div>
             </div>
         );
     }
 
-    if (products.length === 0) {
-        return (
-            <div className="accounts-container">
-                <div className="empty-message">You haven't connected any bank accounts yet.</div>
-            </div>
-        );
-    }
+    // 1. Generate a unique list of bank names from the fetched products
+    const uniqueBanks = ['All', ...new Set(products.map(p => p.bankDetails?.bankName || 'Unknown Bank'))];
+
+    // 2. Filter the products based on the selected dropdown value
+    const filteredProducts = selectedBank === 'All'
+        ? products
+        : products.filter(p => (p.bankDetails?.bankName || 'Unknown Bank') === selectedBank);
 
     return (
         <div className="accounts-container">
-            <div className="accounts-grid">
-                {products.map((product) => (
-                    <ProductCard key={product.productId} product={product} />
-                ))}
-            </div>
+
+            {/* Filter Controls Row */}
+            {products.length > 0 && (
+                <div className="accounts-filter-row">
+                    <label htmlFor="bank-filter">Filter by Bank:</label>
+                    <select
+                        id="bank-filter"
+                        className="accounts-select"
+                        value={selectedBank}
+                        onChange={(e) => setSelectedBank(e.target.value)}
+                    >
+                        {uniqueBanks.map(bank => (
+                            <option key={bank} value={bank}>{bank}</option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
+            {/* Display Logic */}
+            {products.length === 0 ? (
+                <div className="empty-message">You haven't connected any bank accounts yet.</div>
+            ) : filteredProducts.length === 0 ? (
+                <div className="empty-message">No accounts found for {selectedBank}.</div>
+            ) : (
+                <div className="accounts-grid">
+                    {filteredProducts.map((product) => (
+                        <ProductCard key={product.productId} product={product} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

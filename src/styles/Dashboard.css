@@ -95,3 +95,72 @@ h3 {
     width: 100%;
 }
 .fill { background: #2d3748; height: 100%; border-radius: 3px; }
+
+/* =========================================
+   Dashboard Group Expand/Collapse Styles
+   ========================================= */
+
+.dashboard-group {
+    margin-bottom: 10px;
+}
+
+/* Forces the Title container and Total Amount to opposite ends */
+.dashboard-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-group-header:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Places the Group Name and the Arrow side-by-side */
+.dashboard-group-title {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between the name and arrow */
+}
+
+/* Removes default block margins from the H4 */
+.dashboard-group-title h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.dashboard-group-total {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a202c;
+}
+
+/* Chevron Animation */
+.dashboard-group-chevron {
+    font-size: 0.75rem;
+    color: #718096;
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(0deg); /* Default: Points right */
+}
+
+.dashboard-group-chevron.expanded {
+    transform: rotate(90deg); /* Points down when expanded */
+}
+
+/* Slight indentation for the accounts inside the group */
+.dashboard-group-content {
+    padding-left: 10px;
+    padding-top: 5px;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

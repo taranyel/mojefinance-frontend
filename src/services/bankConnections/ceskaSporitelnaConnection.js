@@ -35,7 +35,7 @@ export const processCeskaSporitelnaCallback = async (bankId, code, axiosClient, 
         API_CONFIG.ENDPOINTS.BANK_CONNECT,
         {
             clientRegistrationId: bankId,
-            bankName: "Ceska Sporitelna"
+            bankName: "Česká Spořitelna"
         },
         {
             params: { code }
