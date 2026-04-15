@@ -1,6 +1,8 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import '../styles/Sidebar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faArrowRightArrowLeft, faBuildingColumns, faCreditCard, faHouse, faCoins} from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
     return (
@@ -15,7 +17,7 @@ const Sidebar = () => {
                     className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
                     end
                 >
-                    <span className="icon">🏠</span>
+                    <FontAwesomeIcon icon={faHouse} />
                     <span>Dashboard</span>
                 </NavLink>
 
@@ -23,7 +25,7 @@ const Sidebar = () => {
                     to="/transactions"
                     className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
                 >
-                    <span className="icon">↔️</span>
+                    <FontAwesomeIcon icon={faArrowRightArrowLeft} />
                     <span>Transactions</span>
                 </NavLink>
 
@@ -31,7 +33,7 @@ const Sidebar = () => {
                     to="/accounts"
                     className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
                 >
-                    <span className="icon">💳</span>
+                    <FontAwesomeIcon icon={faCreditCard} />
                     <span>Accounts</span>
                 </NavLink>
 
@@ -39,12 +41,12 @@ const Sidebar = () => {
                     to="/banks"
                     className={({isActive}) => `menu-item ${isActive ? 'active' : ''}`}
                 >
-                    <span className="icon">🏛️</span>
+                    <FontAwesomeIcon icon={faBuildingColumns} />
                     <span>Banks</span>
                 </NavLink>
 
                 <div className="menu-item disabled">
-                    <span className="icon">📉</span>
+                    <FontAwesomeIcon icon={faCoins} />
                     <span>Budgeting</span>
                 </div>
             </nav>

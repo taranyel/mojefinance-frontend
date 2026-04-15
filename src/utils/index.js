@@ -12,4 +12,4 @@ export {
     getAvailableBanksToConnect,
     getAllAvailableBanks
 } from './bankUtils';
-
+export { handleLogoError } from './logoUtils';

@@ -10,7 +10,6 @@ const LandingPage = () => {
                     Track all your assets, liabilities, and financial goals in one secure dashboard.
                     Connect your bank accounts and get real-time insights into your net worth.
                 </p>
-                {/* Login button removed from here. It is now only in the Header. */}
             </div>
 
             <div className="preview-section">

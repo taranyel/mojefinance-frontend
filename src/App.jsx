@@ -16,7 +16,6 @@ function App() {
     const authContext = useContext(AuthContext);
     const {token} = authContext;
 
-    // Initialize axios with auth context for token refresh
     useEffect(() => {
         initializeAxiosWithAuth(authContext);
     }, [authContext]);
@@ -64,11 +63,11 @@ function App() {
                             <Route path="/transactions" element={
                                 token ? (
                                     <>
-                                        <Header title="Transactions Overview" />
-                                        <Transactions />
+                                        <Header title="Transactions Overview"/>
+                                        <Transactions/>
                                     </>
-                                ) : <Navigate to="/" />
-                            } />
+                                ) : <Navigate to="/"/>
+                            }/>
 
                             <Route path="/bank-callback" element={<BankCallback/>}/>
 

@@ -9,9 +9,8 @@
     z-index: 100;
 }
 
-/* --- Typography --- */
 .header-left h1 {
-    font-size: 1.5rem; /* Matches "Dashboard" size */
+    font-size: 1.5rem;
     margin: 0;
     color: #1a202c;
     font-family: 'Inter', sans-serif;
@@ -22,20 +21,18 @@
     font-family: 'ADLaM Display', cursive;
     font-weight: 400;
     font-size: 28px;
-    color: var(--primary-purple);
     margin: 0;
     line-height: 1.2;
+    color: #2D0F8E;
 }
 
-/* --- Right Side Area --- */
 .header-right {
     display: flex;
     align-items: center;
 }
 
-/* Guest Login Button (Pill Style) */
 .btn-login {
-    background-color: var(--primary-purple);
+    background-color: #2D0F8E;
     color: white;
     padding: 12px 32px;
     border: none;
@@ -47,32 +44,30 @@
     box-shadow: 0 4px 14px rgba(94, 53, 177, 0.4);
     transition: all 0.3s ease;
 }
+
 .btn-login:hover {
     transform: translateY(-2px);
     background-color: #512da8;
     box-shadow: 0 6px 20px rgba(94, 53, 177, 0.6);
 }
 
-/* --- LOGGED IN STYLES (New) --- */
-
 .logged-in-actions {
     display: flex;
     align-items: center;
-    gap: 30px; /* Space between Language and Profile */
+    gap: 30px;
 }
 
-/* Language Selector: EN CZ */
 .lang-selector {
     display: flex;
     gap: 8px;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
-    color: #a0aec0; /* Gray for inactive */
+    color: #a0aec0;
     cursor: pointer;
 }
 
 .lang-active {
-    color: #1a202c; /* Dark for active */
+    color: #1a202c;
     font-weight: 700;
 }
 
@@ -80,20 +75,19 @@
     color: #4a5568;
 }
 
-/* User Profile Wrapper */
 .user-profile-wrapper {
     display: flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    position: relative; /* For absolute positioning of dropdown */
+    position: relative;
     padding: 4px;
     border-radius: 8px;
     transition: background-color 0.2s;
 }
 
 .user-profile-wrapper:hover {
-    background-color: rgba(0,0,0,0.03);
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
 .avatar {
@@ -101,7 +95,10 @@
     height: 40px;
     border-radius: 50%;
     border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1.2rem;
+    align-items: center;
+    display: flex;
 }
 
 .username {
@@ -121,15 +118,14 @@
     transform: rotate(180deg);
 }
 
-/* Dropdown Menu */
 .profile-dropdown {
     position: absolute;
-    top: 120%; /* Below the profile */
+    top: 120%;
     right: 0;
     background-color: white;
     min-width: 150px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     padding: 8px;
     border: 1px solid #edf2f7;
     z-index: 1000;
@@ -143,7 +139,7 @@
     background: none;
     border: none;
     border-radius: 8px;
-    color: #e53e3e; /* Red color for Log Out */
+    color: #e53e3e;
     font-weight: 500;
     cursor: pointer;
     font-size: 0.9rem;
@@ -155,6 +151,12 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

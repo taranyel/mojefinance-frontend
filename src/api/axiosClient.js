@@ -41,7 +41,6 @@ axiosClient.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        // Handle 401 Unauthorized
         if (error.response?.status === HTTP_STATUS.UNAUTHORIZED && !originalRequest._retry) {
             originalRequest._retry = true;
 
@@ -54,7 +53,6 @@ axiosClient.interceptors.response.use(
                         originalRequest.headers[HTTP_HEADERS.AUTHORIZATION] = `Bearer ${newToken}`;
                         return axiosClient(originalRequest);
                     } else {
-                        // Token refresh failed
                         if (authContext.logout) {
                             authContext.logout();
                         }
@@ -70,13 +68,11 @@ axiosClient.interceptors.response.use(
                     return Promise.reject(refreshError);
                 }
             } else {
-                // No auth context, logout
                 window.location.href = '/';
                 return Promise.reject(error);
             }
         }
 
-        // Handle 403 Forbidden
         if (error.response?.status === HTTP_STATUS.FORBIDDEN) {
             console.error('Access forbidden');
         }

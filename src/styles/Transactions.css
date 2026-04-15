@@ -1,4 +1,3 @@
-/* Main Layout */
 .transactions-container {
     width: 100%;
     animation: fadeIn 0.3s ease-in-out;
@@ -6,19 +5,16 @@
 
 .tx-grid {
     display: grid;
-    /* Ratio matches the screenshot: List takes more space than the analytics */
     grid-template-columns: 1.3fr 1fr;
     gap: 50px;
     margin-top: 10px;
 }
 
-/* ================= LEFT COLUMN ================= */
 .tx-left-col {
     display: flex;
     flex-direction: column;
 }
 
-/* Account Selector */
 .tx-account-selector {
     position: relative;
     width: 100%;
@@ -49,7 +45,7 @@
 }
 
 .tx-dr-bank-logo {
-    width:33px;
+    width: 33px;
     height: 33px;
     border-radius: 50%;
     background-color: #fff;
@@ -58,7 +54,7 @@
 }
 
 .tx-bank-logo {
-    width:40px;
+    width: 40px;
     height: 40px;
     border-radius: 50%;
     background-color: #fff;
@@ -76,9 +72,14 @@
     color: white;
     font-weight: 700;
     font-size: 1.1rem;
-    background-color: #3b82f6; /* CSAS Blue */
+    background-color: #3b82f6;
 }
-.tx-acc-icon.sm { width: 28px; height: 28px; font-size: 0.9rem; }
+
+.tx-acc-icon.sm {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+}
 
 .tx-acc-details h4 {
     margin: 0;
@@ -122,11 +123,11 @@
     cursor: pointer;
     border-bottom: 1px solid #f7fafc;
 }
+
 .tx-dropdown-item:hover {
     background-color: #f7fafc;
 }
 
-/* Filter Tabs */
 .tx-tabs {
     display: flex;
     gap: 20px;
@@ -154,7 +155,6 @@
     border-bottom-color: var(--text-dark);
 }
 
-/* Transaction List */
 .tx-month-group {
     margin-bottom: 30px;
 }
@@ -180,14 +180,13 @@
 }
 
 .tx-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    color: var(--text-dark);
     border: 1px solid #edf2f7;
     background-color: #fff;
 }
@@ -217,25 +216,34 @@
     font-weight: 700;
     font-size: 0.9rem;
 }
-/* Exact screenshot colors */
-.tx-amount.expense { color: #e53e3e; }
-.tx-amount.income { color: #38a169; }
 
-/* ================= RIGHT COLUMN ================= */
+.tx-amount.expense {
+    color: #e53e3e;
+}
+
+.tx-amount.income {
+    color: #38a169;
+}
+
 .tx-right-col {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Right Side Cards (The light rose/pink background) */
 .tx-card, .tx-categories-card, .tx-summary-totals {
-    background-color: #fdf6f6;
+    background-color: #faeaea;
     border-radius: 8px;
 }
 
-.tx-card { padding: 24px; }
-.tx-categories-card { padding: 10px 24px; }
+.tx-card {
+    padding: 24px;
+    height: 220px;
+}
+
+.tx-categories-card {
+    padding: 10px 24px;
+}
 
 .tx-card-header {
     display: flex;
@@ -267,20 +275,21 @@
     margin-right: 6px;
     vertical-align: -2px;
 }
-.tx-dot.income { background-color: #38a169; }
-.tx-dot.expense { background-color: #e53e3e; }
 
-/* CSS Chart */
-.tx-chart-visual {
-    position: relative;
-    height: 180px;
-    display: flex;
-    padding-left: 30px;
+.tx-dot.income {
+    background-color: #38a169;
+}
+
+.tx-dot.expense {
+    background-color: #e53e3e;
 }
 
 .tx-chart-lines {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 30px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -290,70 +299,29 @@
 
 .tx-chart-lines .tx-line {
     position: absolute;
-    left: 25px; right: 0;
+    left: 25px;
+    right: 0;
     height: 1px;
     background-color: #cbd5e0;
     z-index: 1;
 }
 
-.tx-chart-lines span:nth-child(1) + .tx-line { top: 0; }
-.tx-chart-lines span:nth-child(3) + .tx-line { top: 33%; }
-.tx-chart-lines span:nth-child(5) + .tx-line { top: 66%; }
-.tx-chart-lines span:nth-child(7) + .tx-line { bottom: 0; }
-
-.tx-chart-columns {
-    flex: 1;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    z-index: 2;
-    padding-bottom: 30px;
-    margin-left: 5px;
+.tx-chart-lines span:nth-child(1) + .tx-line {
+    top: 0;
 }
 
-.tx-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    justify-content: flex-end;
-    position: relative;
-    width: 12%;
+.tx-chart-lines span:nth-child(3) + .tx-line {
+    top: 33%;
 }
 
-.tx-col.active::before {
-    content: '';
-    position: absolute;
-    top: 0; bottom: 25px; left: -2px; right: -2px;
-    background-color: rgba(0,0,0,0.06);
-    z-index: -1;
-    border-radius: 2px;
+.tx-chart-lines span:nth-child(5) + .tx-line {
+    top: 66%;
 }
 
-.tx-bars {
-    display: flex;
-    gap: 3px;
-    height: 100%;
-    align-items: flex-end;
-    width: 100%;
-    justify-content: center;
+.tx-chart-lines span:nth-child(7) + .tx-line {
+    bottom: 0;
 }
 
-.tx-bar {
-    width: 12px;
-    border-radius: 1px 1px 0 0;
-}
-.tx-bar.inc { background-color: #38a169; }
-.tx-bar.exp { background-color: #e53e3e; }
-
-.tx-col span {
-    position: absolute;
-    bottom: -20px;
-    font-size: 0.7rem;
-    color: var(--text-dark);
-}
-
-/* Summary Totals */
 .tx-summary-totals {
     display: flex;
     justify-content: space-between;
@@ -362,24 +330,37 @@
 
 .tx-total-val {
     font-size: 0.85rem;
+    font-weight: bold;
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-dark); /* Label text is dark */
 }
 
-/* Format the "Income/Expenses" text differently from the amount */
 .tx-total-val strong {
     font-weight: 700;
 }
-.tx-total-val.income strong { color: #1a202c; }
-.tx-total-val.expense strong { color: #1a202c; }
 
-.tx-arrow { font-size: 0.9rem; font-weight: bold; }
-.tx-total-val.income .tx-arrow { color: #38a169; }
-.tx-total-val.expense .tx-arrow { color: #e53e3e; }
+.tx-total-val.income strong {
+    color: #1a202c;
+}
 
-/* Category Breakdown */
+.tx-total-val.expense strong {
+    color: #1a202c;
+}
+
+.tx-arrow {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.tx-total-val.income .tx-arrow {
+    color: #38a169;
+}
+
+.tx-total-val.expense .tx-arrow {
+    color: #e53e3e;
+}
+
 .tx-cat-item {
     display: flex;
     justify-content: space-between;
@@ -408,20 +389,24 @@
     font-weight: 700;
     font-size: 0.85rem;
 }
-.tx-cat-amount.expense { color: #e53e3e; }
-.tx-cat-amount.income { color: #38a169; }
 
-/* Container for both Tabs and Date Pickers */
+.tx-cat-amount.expense {
+    color: #e53e3e;
+}
+
+.tx-cat-amount.income {
+    color: #38a169;
+}
+
 .tx-controls-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Allows stacking on smaller screens */
+    flex-wrap: wrap;
     gap: 16px;
 }
 
-/* Date Filters Styling */
 .tx-date-filters {
     display: flex;
     align-items: center;
@@ -429,7 +414,7 @@
     background-color: white;
     padding: 6px 12px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .tx-date-input {
@@ -463,7 +448,99 @@
     outline: none;
 }
 
+.tx-chart-visual {
+    position: relative;
+    height: 180px;
+    display: flex;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.tx-chart-columns {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    z-index: 2;
+    padding-bottom: 30px;
+    margin-left: 5px;
+    height: 100%;
+}
+
+.tx-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    width: 15%;
+    cursor: pointer;
+    padding-bottom: 30px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    z-index: 2;
+}
+
+.tx-col.active {
+    background-color: rgba(0, 0, 0, 0.06);
+    height: 170px;
+}
+
+.tx-col:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.02);
+    height: 170px;
+}
+
+.tx-bar {
+    width: 12px;
+    border-radius: 1px 1px 0 0;
+    min-height: 0;
+    border: none;
+}
+
+.tx-bars {
+    display: flex;
+    gap: 3px;
+    height: 100%;
+    align-items: flex-end;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+}
+
+.tx-bar.inc {
+    background-color: #38a169;
+}
+
+.tx-bar.exp {
+    background-color: #e53e3e;
+}
+
+.tx-col span {
+    position: absolute;
+    bottom: 5px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.tx-chart-lines .tx-line {
+    position: absolute;
+    left: 25px;
+    right: 0;
+    height: 1px;
+    background-color: #cbd5e0;
+    z-index: 1;
+}
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

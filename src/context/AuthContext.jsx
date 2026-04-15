@@ -78,18 +78,16 @@ export const AuthProvider = ({children}) => {
         return true;
     }, [token, refreshAccessToken]);
 
-    // Set up token expiration check interval
     useEffect(() => {
         if (!token) return;
 
         const interval = setInterval(() => {
             checkAndRefreshToken();
-        }, 30000); // Check every 30 seconds
+        }, 30000);
 
         return () => clearInterval(interval);
     }, [token, checkAndRefreshToken]);
 
-    // Handle OAuth callback
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');

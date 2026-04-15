@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { handleLogoError } from '../utils';
 import '../styles/Accounts.css';
 
 const ProductCard = ({ product }) => {
-    // Safely extract properties based on your OpenAPI schema
     const {
         accountName,
         productCategory,
@@ -12,23 +13,18 @@ const ProductCard = ({ product }) => {
         ownersNames
     } = product;
 
-    // Format the currency nicely (e.g., 10 500.00 CZK)
     const formattedBalance = balance?.value !== undefined
         ? balance.value + ' ' + balance.currency
         : 'Balance unavailable';
 
     return (
         <div className="product-card">
-
             <div className="product-header-row">
                 <img
                     src={`/bank-logos/${bankDetails.clientRegistrationId}.png`}
                     alt={`${bankDetails.bankName || 'Bank'} Logo`}
                     className="product-bank-logo"
-                    onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/banks/default-bank.png';
-                    }}
+                    onError={handleLogoError}
                 />
                 <div className="product-header-text">
                     <h3 className="product-account-name">{accountName || 'Unnamed Account'}</h3>
@@ -39,10 +35,8 @@ const ProductCard = ({ product }) => {
             <p className="data-label">Balance</p>
             <h2 className="main-balance-amount">{formattedBalance}</h2>
 
-            {/* 3. Divider Line */}
             <div className="divider"></div>
 
-            {/* 4. Details Stack */}
             <div className="details-stack">
                 <div className="detail-item">
                     <p className="data-label">IBAN</p>
@@ -56,13 +50,33 @@ const ProductCard = ({ product }) => {
 
                 <div className="detail-item">
                     <p className="data-label">Account owner</p>
-                    {/* Join the array of owners if it exists, otherwise fallback */}
                     <p className="detail-value">{ownersNames?.join(', ') || 'Unknown'}</p>
                 </div>
             </div>
 
         </div>
     );
+};
+
+ProductCard.propTypes = {
+    product: PropTypes.shape({
+        productId: PropTypes.string.isRequired,
+        accountName: PropTypes.string,
+        productCategory: PropTypes.string,
+        balance: PropTypes.shape({
+            value: PropTypes.number,
+            currency: PropTypes.string,
+        }),
+        bankDetails: PropTypes.shape({
+            clientRegistrationId: PropTypes.string.isRequired,
+            bankName: PropTypes.string,
+        }).isRequired,
+        productIdentification: PropTypes.shape({
+            iban: PropTypes.string,
+            productNumber: PropTypes.string,
+        }),
+        ownersNames: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
 };
 
 export default ProductCard;

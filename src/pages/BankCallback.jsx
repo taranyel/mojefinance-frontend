@@ -17,7 +17,6 @@ const BankCallback = () => {
     const processedRef = useRef(false);
 
     useEffect(() => {
-        // Prevent duplicate processing
         if (processedRef.current) {
             return;
         }
@@ -25,7 +24,6 @@ const BankCallback = () => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
         const bankId = sessionStorage.getItem('selectedBank');
-        console.log("bank id: " + bankId)
         const error = params.get('error');
 
         const handleError = (message) => {

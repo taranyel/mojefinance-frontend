@@ -1,34 +1,31 @@
 /**
  * BankCard Component
- * Displays a single connected bank card
+ * Displays a single connected bank card with status and actions
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { handleLogoError } from '../utils';
 
-const BankCard = ({bank, onDisconnect, onConnectAgain}) => {
+const BankCard = ({ bank, onDisconnect, onConnectAgain }) => {
     const isDisconnected = bank.status === 'DISCONNECTED';
 
-    const handleDisconnectClick = () => {
+    const handleDisconnectClick = useCallback(() => {
         onDisconnect(bank.id, bank.name);
-    };
+    }, [bank.id, bank.name, onDisconnect]);
 
-    const handleConnectAgainClick = () => {
+    const handleConnectAgainClick = useCallback(() => {
         onConnectAgain(bank);
-    };
+    }, [bank, onConnectAgain]);
 
     return (
         <div className={`bank-card ${isDisconnected ? 'bank-card--disconnected' : ''}`}>
             <div className="bank-header-row">
                 <img
-                    className={`bank-logo`}
+                    className="bank-logo"
                     src={`/bank-logos/${bank.id}.png`}
                     alt={`${bank.name || 'Bank'} Logo`}
-                    onError={(e) => {
-                        // Optional fallback: If the specific bank logo is missing, show a default
-                        e.target.onerror = null;
-                        e.target.src = '/bank-logos/default-bank.png';
-                    }}
+                    onError={handleLogoError}
                 />
                 <h3 className="bank-name">{bank.name}</h3>
             </div>
@@ -73,8 +70,6 @@ BankCard.propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
-        logo: PropTypes.string.isRequired,
-        class: PropTypes.string.isRequired,
     }).isRequired,
     onDisconnect: PropTypes.func.isRequired,
     onConnectAgain: PropTypes.func.isRequired,

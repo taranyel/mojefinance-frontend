@@ -16,12 +16,11 @@
     padding-left: 10px;
 }
 
-/* The specific brand title style requested */
 .sidebar-brand h2 {
     font-family: 'ADLaM Display', cursive;
-    font-weight: 400; /* Regular */
+    font-weight: 400;
     font-size: 28px;
-    color: var(--primary-purple);
+    color: #2D0F8E;
     margin: 0;
     line-height: 1.2;
 }
@@ -49,7 +48,6 @@
 
 .menu-item:hover {
     background-color: #f7fafc;
-    color: var(--primary-purple);
 }
 
 .menu-item.active {
@@ -72,22 +70,19 @@
 
 a.menu-item {
     text-decoration: none;
-    display: flex; /* Ensure flex behavior persists */
+    display: flex;
 }
 
-/* Add this to your existing Sidebar.css */
-
-/* Ensure Links act like flex containers */
 a.menu-item {
     text-decoration: none;
     display: flex;
 }
 
-/* Optional: Style for inactive/placeholder links */
 .menu-item.disabled {
     opacity: 0.6;
     cursor: default;
 }
+
 .menu-item.disabled:hover {
     background-color: transparent;
     color: #718096;

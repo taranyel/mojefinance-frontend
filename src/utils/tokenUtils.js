@@ -39,7 +39,6 @@ export const isTokenExpired = (token) => {
     const expirationTime = getTokenExpirationTime(token);
     if (!expirationTime) return false;
 
-    // Add buffer to refresh before actual expiration
     return Date.now() >= (expirationTime - TOKEN_CONFIG.EXPIRATION_BUFFER_MS);
 };
 

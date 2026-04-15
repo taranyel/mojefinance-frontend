@@ -1,5 +1,5 @@
 import axiosClient from '../api/axiosClient';
-import { API_CONFIG } from "../constants";
+import { API_CONFIG } from '../constants';
 
 export const fetchTransactions = async (accountId, clientRegistrationId, fromDate, toDate) => {
     const response = await axiosClient.get(
@@ -8,6 +8,5 @@ export const fetchTransactions = async (accountId, clientRegistrationId, fromDat
             params: { fromDate, toDate }
         }
     );
-    console.log(response);
-    return response.data.groupedByMonth;
+    return response.data;
 };

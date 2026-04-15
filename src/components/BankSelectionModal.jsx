@@ -3,26 +3,26 @@
  * Modal for selecting a bank to connect
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {UI_CONFIG, AVAILABLE_BANKS} from '../constants';
-import {getAvailableBanksToConnect} from '../utils';
+import { UI_CONFIG, AVAILABLE_BANKS } from '../constants';
+import { getAvailableBanksToConnect, handleLogoError } from '../utils';
 
-const BankSelectionModal = ({isOpen, onClose, connectedBanks, onSelectBank}) => {
+const BankSelectionModal = ({ isOpen, onClose, connectedBanks, onSelectBank }) => {
     if (!isOpen) return null;
 
     const availableBanks = getAvailableBanksToConnect(AVAILABLE_BANKS, connectedBanks);
 
-    const handleBackdropClick = (e) => {
+    const handleBackdropClick = useCallback((e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
-    };
+    }, [onClose]);
 
-    const handleBankSelect = (bank) => {
+    const handleBankSelect = useCallback((bank) => {
         onClose();
         onSelectBank(bank);
-    };
+    }, [onClose, onSelectBank]);
 
     return (
         <div className="modal-overlay" onClick={handleBackdropClick}>
@@ -52,15 +52,11 @@ const BankSelectionModal = ({isOpen, onClose, connectedBanks, onSelectBank}) => 
                                 }
                             }}
                         >
-                            {/* Elements sit directly inside the flex-column container */}
                             <img
                                 className={`bank-logo ${bank.class}`}
                                 src={`/bank-logos/${bank.id}.png`}
                                 alt={`${bank.name || 'Bank'} Logo`}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = '/bank-logos/default-bank.png';
-                                }}
+                                onError={handleLogoError}
                             />
                             <p className="bank-name">{bank.name}</p>
                         </div>

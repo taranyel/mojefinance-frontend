@@ -16,7 +16,6 @@ export const handleAirBankConnection = (bank) => {
         state: state
     });
 
-    console.log("url:" + `${authUrl}?${params.toString()}`)
 
     window.location.href = `${authUrl}?${params.toString()}`;
 };

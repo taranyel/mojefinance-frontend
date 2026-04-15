@@ -7,7 +7,6 @@
     padding: 40px 0;
 }
 
-/* Hero Section */
 .hero-title {
     font-size: 3.5rem;
     line-height: 1.1;
@@ -33,7 +32,6 @@
     font-size: 1.1rem;
 }
 
-/* Preview Section (The "Screenshot" style) */
 .preview-section {
     display: flex;
     flex-direction: column;
@@ -76,22 +74,20 @@
     line-height: 1.5;
 }
 
-/* Specific Colors from Screenshot */
 .blue-card {
-    background-color: var(--accent-blue-light); /* Light Blue */
+    background-color: var(--accent-blue-light);
 }
 
 .purple-card {
-    background-color: var(--primary-purple-light); /* Light Purple */
+    background-color: var(--primary-purple-light);
 }
 
-/* Goal Items Styling */
 .goal-item {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 15px;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     padding: 10px;
     border-radius: 12px;
 }
