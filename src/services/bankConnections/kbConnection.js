@@ -36,8 +36,10 @@ export const processKBCallback = async (bankId, code, axiosClient, token) => {
     const response = await axiosClient.post(
         API_CONFIG.ENDPOINTS.BANK_CONNECT,
         {
-            clientRegistrationId: bankId,
-            bankName: "Komerční banka"
+            bankConnection: {
+                clientRegistrationId: bankId,
+                bankName: "Komerční banka"
+            }
         },
         {
             params: { code }

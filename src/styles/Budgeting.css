@@ -1,0 +1,228 @@
+.budgeting-container {
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.budgeting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.budget-alerts-banner {
+    background-color: #fff5f5;
+    border-left: 5px solid #e53e3e;
+    color: #c53030;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(229, 62, 62, 0.1);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.budget-alerts-banner svg {
+    font-size: 1.5rem;
+    color: #e53e3e;
+}
+
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.budget-card {
+    background: #dee9fa;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 5px solid #3b82f6;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.budget-card.exceeded {
+    border-left-color: #e53e3e;
+    background: #f8e0e0;
+}
+
+.budget-card-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.budget-cat-label {
+    font-weight: 700;
+    color: var(--text-dark, #1a202c);
+}
+
+.budget-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+
+.budget-actions button:hover {
+    color: var(--text-dark, #1a202c);
+}
+
+.budget-amounts {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.spent {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.spent.text-red {
+    color: #e53e3e;
+}
+
+.limit {
+    font-size: 0.85rem;
+}
+
+.progress-container {
+    height: 8px;
+    background: #edf2f7;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #3b82f6;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.exceeded .progress-bar {
+    background: #e53e3e;
+}
+
+.exceeded-tag {
+    color: #e53e3e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.2s;
+}
+
+.modal-content-budgeting {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn-cancel {
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #e2e8f0;
+    color: #1a202c;
+}
+
+.btn-submit {
+    border-color: #5e35b1;
+    color: #5e35b1;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group input, .form-group select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-color: #5e35b1;
+    color: #5e35b1;
+    background-color: white;
+    transition: transform 0.1s ease;
+    height: 40px;
+    width: 160px;
+}
+
+.btn-primary:hover {
+    height: 42px;
+    width: 162px;
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.budget-dates {
+    font-size: 0.75rem;
+    margin-top: 4px;
+    font-weight: 500;
+}

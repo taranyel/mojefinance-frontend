@@ -45,18 +45,14 @@ const Sidebar = () => {
                     <span>Banks</span>
                 </NavLink>
 
-                <div className="menu-item disabled">
+                <NavLink
+                    to="/budgeting"
+                    className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}
+                >
                     <FontAwesomeIcon icon={faCoins} />
                     <span>Budgeting</span>
-                </div>
+                </NavLink>
             </nav>
-
-            <div className="sidebar-footer">
-                <div className="menu-item">
-                    <span className="icon">⚙️</span>
-                    <span>Settings</span>
-                </div>
-            </div>
         </aside>
     );
 };

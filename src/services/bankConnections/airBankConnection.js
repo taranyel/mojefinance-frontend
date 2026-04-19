@@ -31,8 +31,10 @@ export const processAirBankCallback = async (bankId, code, axiosClient, token) =
     const response = await axiosClient.post(
         API_CONFIG.ENDPOINTS.BANK_CONNECT,
         {
-            clientRegistrationId: bankId,
-            bankName: "Air Bank"
+            bankConnection: {
+                clientRegistrationId: bankId,
+                bankName: "Air Bank"
+            }
         },
         {
             params: { code }

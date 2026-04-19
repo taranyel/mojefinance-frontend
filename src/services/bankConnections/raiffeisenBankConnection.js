@@ -6,8 +6,10 @@ export const handleRaiffeisenBankConnection = async (bank) => {
         const response = await axiosClient.post(
             API_CONFIG.ENDPOINTS.BANK_CONNECT,
             {
-                clientRegistrationId: bank.id,
-                bankName: bank.name
+                bankConnection: {
+                    clientRegistrationId: bank.id,
+                    bankName: bank.name
+                }
             }
         );
 

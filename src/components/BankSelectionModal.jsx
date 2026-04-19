@@ -28,7 +28,7 @@ const BankSelectionModal = ({ isOpen, onClose, connectedBanks, onSelectBank }) =
         <div className="modal-overlay" onClick={handleBackdropClick}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>Select a Bank to Connect</h2>
+                    <h2>Select a bank to connect</h2>
                     <button
                         className="modal-close"
                         onClick={onClose}

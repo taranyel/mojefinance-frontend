@@ -41,6 +41,7 @@ const Banks = () => {
     }, []);
 
     const handleConnectBank = useCallback((bank) => {
+        console.log('Connecting bank', bank);
         try {
             routeBankConnection(bank);
         } catch (error) {

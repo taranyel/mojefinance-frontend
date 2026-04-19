@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import Banks from './pages/Banks';
 import Accounts from './pages/Accounts';
+import Budgeting from './pages/Budgeting'; // Added Import
 import BankCallback from './pages/BankCallback';
 import {AuthContext} from './context/AuthContext';
 import {initializeAxiosWithAuth} from './api/axiosClient';
@@ -65,6 +66,16 @@ function App() {
                                     <>
                                         <Header title="Transactions Overview"/>
                                         <Transactions/>
+                                    </>
+                                ) : <Navigate to="/"/>
+                            }/>
+
+                            {/* --- NEW BUDGETING ROUTE --- */}
+                            <Route path="/budgeting" element={
+                                token ? (
+                                    <>
+                                        <Header title="Budgeting"/>
+                                        <Budgeting/>
                                     </>
                                 ) : <Navigate to="/"/>
                             }/>

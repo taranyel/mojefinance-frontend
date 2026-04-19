@@ -29,11 +29,6 @@ const Header = ({ title }) => {
                     </button>
                 ) : (
                     <div className="logged-in-actions">
-                        <div className="lang-selector">
-                            <span className="lang-active">EN</span>
-                            <span className="lang-option">CZ</span>
-                        </div>
-
                         <div className="user-profile-wrapper" onClick={toggleDropdown}>
                             <div className="avatar">
                                 <img

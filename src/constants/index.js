@@ -18,6 +18,7 @@ export const API_CONFIG = {
         PRODUCTS: '/api/products',
         ASSETS_LIABILITIES: '/api/products/assets-liabilities',
         CASH_FLOW: '/api/products/cash-flow',
+        BUDGETS: '/api/budgets',
         TRANSACTIONS: (clientRegistrationId, accountId) => `/api/products/${clientRegistrationId}/${accountId}/transactions`
     },
     TIMEOUT: 30000,

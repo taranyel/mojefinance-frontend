@@ -213,7 +213,6 @@
     border-radius: 16px;
     padding: 32px;
     max-width: 600px;
-    width: 90%;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -252,8 +251,7 @@
 }
 
 .modal-banks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    display: flex;
     gap: 16px;
 }
 
@@ -264,10 +262,11 @@
     gap: 12px;
     padding: 16px;
     border-radius: 12px;
-    background-color: #f7fafc;
+    background-color: #f2f9fb;
     border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.2s;
+    width: 90px;
 }
 
 .modal-bank-option:hover {
