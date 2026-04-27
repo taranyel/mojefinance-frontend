@@ -6,7 +6,8 @@ import {
     exchangeCodeForTokens,
     refreshAccessTokenWithRefreshToken,
     validateKeycloakConfig,
-    buildAuthorizationUrl
+    buildAuthorizationUrl,
+    buildLogoutUrl
 } from '../services';
 
 export const AuthContext = createContext(null);
@@ -20,7 +21,10 @@ export const AuthProvider = ({children}) => {
         setToken(null);
         setRefreshToken(null);
         clearTokens();
-        window.history.pushState({}, document.title, "/");
+
+        let logoutUrl = buildLogoutUrl();
+        console.log("Redirecting to:", logoutUrl);
+        window.location.href = logoutUrl;
     }, []);
 
     const login = useCallback(() => {

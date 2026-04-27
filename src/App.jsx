@@ -6,7 +6,7 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import Banks from './pages/Banks';
 import Accounts from './pages/Accounts';
-import Budgeting from './pages/Budgeting'; // Added Import
+import Budgeting from './pages/Budgeting';
 import BankCallback from './pages/BankCallback';
 import {AuthContext} from './context/AuthContext';
 import {initializeAxiosWithAuth} from './api/axiosClient';
@@ -29,7 +29,7 @@ function App() {
                 <div className="main-content-area">
                     <div className="page-content">
                         <Routes>
-                            <Route path="/" element={
+                            <Route path="/dashboard" element={
                                 token ? (
                                     <>
                                         <Header title="Dashboard"/>
@@ -49,7 +49,7 @@ function App() {
                                         <Header title="Banks Overview"/>
                                         <Banks/>
                                     </>
-                                ) : <Navigate to="/"/>
+                                ) : <Navigate to="/dashboard"/>
                             }/>
 
                             <Route path="/accounts" element={
@@ -58,7 +58,7 @@ function App() {
                                         <Header title="Accounts Overview"/>
                                         <Accounts/>
                                     </>
-                                ) : <Navigate to="/"/>
+                                ) : <Navigate to="/dashboard"/>
                             }/>
 
                             <Route path="/transactions" element={
@@ -67,22 +67,21 @@ function App() {
                                         <Header title="Transactions Overview"/>
                                         <Transactions/>
                                     </>
-                                ) : <Navigate to="/"/>
+                                ) : <Navigate to="/dashboard"/>
                             }/>
 
-                            {/* --- NEW BUDGETING ROUTE --- */}
                             <Route path="/budgeting" element={
                                 token ? (
                                     <>
                                         <Header title="Budgeting"/>
                                         <Budgeting/>
                                     </>
-                                ) : <Navigate to="/"/>
+                                ) : <Navigate to="/dashboard"/>
                             }/>
 
                             <Route path="/bank-callback" element={<BankCallback/>}/>
 
-                            <Route path="*" element={<Navigate to="/"/>}/>
+                            <Route path="*" element={<Navigate to="/dashboard"/>}/>
                         </Routes>
                     </div>
                 </div>

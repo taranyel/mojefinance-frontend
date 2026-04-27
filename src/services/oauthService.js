@@ -27,6 +27,15 @@ export const buildAuthorizationUrl = () => {
     return `${KEYCLOAK_CONFIG.AUTH_URL}?${params.toString()}`;
 };
 
+export const buildLogoutUrl = () => {
+    const params = new URLSearchParams({
+        client_id: KEYCLOAK_CONFIG.CLIENT_ID,
+        post_logout_redirect_uri: KEYCLOAK_CONFIG.REDIRECT_URI
+    });
+
+    return `${KEYCLOAK_CONFIG.LOGOUT_URL}?${params.toString()}`;
+};
+
 /**
  * Exchange authorization code for tokens
  * @param {string} code - Authorization code from OAuth provider

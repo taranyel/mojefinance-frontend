@@ -4,13 +4,14 @@
 
 export const KEYCLOAK_CONFIG = {
     CLIENT_ID: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-    AUTH_URL: import.meta.env.VITE_KEYCLOAK_AUTH_URL,
-    TOKEN_URL: import.meta.env.VITE_KEYCLOAK_TOKEN_URL,
-    REDIRECT_URI: import.meta.env.VITE_APP_URL + '/',
+    AUTH_URL: 'http://localhost:8080/realms/mojefinance/protocol/openid-connect/auth',
+    TOKEN_URL: 'http://localhost:8080/realms/mojefinance/protocol/openid-connect/token',
+    LOGOUT_URL: 'http://localhost:8080/realms/mojefinance/protocol/openid-connect/logout',
+    REDIRECT_URI: 'http://localhost:5173/dashboard',
 };
 
 export const API_CONFIG = {
-    BASE_URL: import.meta.env.API_BASE_URL || '/',
+    BASE_URL: '/',
     ENDPOINTS: {
         BANKS: '/api/banks',
         BANK_CONNECT: `/api/banks/connect`,
@@ -44,6 +45,7 @@ export const TOKEN_CONFIG = {
     REFRESH_TOKEN_KEY: 'refresh_token',
     EXPIRATION_BUFFER_MS: 60 * 1000,
     CHECK_INTERVAL_MS: 30 * 1000,
+    ID_TOKEN: 'id_token'
 };
 
 export const HTTP_HEADERS = {
